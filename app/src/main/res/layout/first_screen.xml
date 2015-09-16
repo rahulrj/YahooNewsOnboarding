@@ -58,6 +58,7 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:id="@+id/imageView6"
         android:src="@mipmap/ic_launcher"
         android:layout_alignTop="@+id/imageView2"
         android:layout_toLeftOf="@+id/imageView4"
@@ -75,6 +76,7 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:id="@+id/imageView7"
         android:src="@mipmap/ic_launcher"
         android:layout_below="@+id/imageView3"
         android:layout_alignLeft="@+id/imageView5"

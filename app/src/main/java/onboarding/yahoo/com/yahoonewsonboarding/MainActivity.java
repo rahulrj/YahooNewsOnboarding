@@ -1,23 +1,48 @@
 package onboarding.yahoo.com.yahoonewsonboarding;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int NUM_PAGES=3;
+    private static final int NUM_PAGES = 3;
     private ViewPager mPager;
     private LinearLayout mIndicatorLayout;
     private TextView mIndicatorView[];
+
+
+    private ImageView mCenterBox;
+    private ImageView mCamcordImage;
+    private ImageView mClockImage;
+    private ImageView mGraphImage;
+    private ImageView mAudioImage;
+    private ImageView mQuoteImage;
+    private ImageView mMapImage;
+    private ImageView mWordPressImage;
+
+
+    private boolean mOnSecondPageSelected;
+
+    private float mCamcordOriginalX;
+    private  int mSelectedPosition=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,27 +53,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setUpViews(){
+    private void setUpViews() {
 
-        mPager=(ViewPager)findViewById(R.id.pager);
-        mIndicatorLayout=(LinearLayout)findViewById(R.id.indicator_layout);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mIndicatorLayout = (LinearLayout) findViewById(R.id.indicator_layout);
 
         mPager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager()));
         setIndicatorLayout();
         setPageChangeListener(mPager);
+        mPager.setPageTransformer(true, new CustomTransformer());
+        //mPager.setOffscreenPageLimit(2);
+
     }
 
-    private void setIndicatorLayout(){
+    private void setIndicatorLayout() {
 
-        int dotsCount=NUM_PAGES;
-        mIndicatorView=new TextView[dotsCount];
-        for (int i = 0; i <dotsCount; i++) {
+        int dotsCount = NUM_PAGES;
+        mIndicatorView = new TextView[dotsCount];
+        for (int i = 0; i < dotsCount; i++) {
 
             mIndicatorView[i] = new TextView(this);
             mIndicatorView[i].setWidth(12);
             mIndicatorView[i].setHeight(12);
             mIndicatorView[i].setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,  LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 0, 15, 0);
             mIndicatorView[i].setLayoutParams(params);
             mIndicatorView[i].setBackgroundResource(R.drawable.rounded_cell);
@@ -61,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         mIndicatorView[0].setGravity(Gravity.CENTER);
     }
 
-    private void setPageChangeListener(ViewPager viewPager){
+    private void setPageChangeListener(ViewPager viewPager) {
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -72,6 +100,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+
+                Log.d("RAHUL","selected");
+                if(position==1){
+
+                    Log.d("RAGUL","CAME");
+                    mOnSecondPageSelected=true;
+                    //Log.d("VIEW",""+mCamcordImage.toString());
+                    mCamcordImage.setX(mCamcordOriginalX);
+                    mCamcordImage.setAlpha(0f);
+                }
+                if(position==0){
+                    doFadeAnimation();
+                    mOnSecondPageSelected=false;
+                    //mOnSecondPageSelected=false;
+                }
 
                 for (int i = 0; i < mIndicatorView.length; i++) {
                     mIndicatorView[i].setWidth(12);
@@ -84,6 +127,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
+
+//                if(mSelectedPosition==0 && state==ViewPager.SCROLL_STATE_IDLE){
+//
+//                    mOnSecondPageSelected=false;
+//                }
 
             }
         });
@@ -98,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            ScreenSlideFragment fragment=new ScreenSlideFragment();
-            Bundle args=new Bundle();
-            args.putInt("position",position);
+            ScreenSlideFragment fragment = new ScreenSlideFragment();
+            Bundle args = new Bundle();
+            args.putInt("position", position);
             fragment.setArguments(args);
 
             return fragment;
@@ -111,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             return NUM_PAGES;
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,5 +182,141 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class CustomTransformer implements ViewPager.PageTransformer {
+
+
+        @Override
+        public void transformPage(View page, float position) {
+
+            int pageWidth = page.getWidth();
+            Log.d("RAHUL",""+pageWidth);
+
+            if (position < -1) {
+
+            } else if (position <= 1) {
+
+                //Log.d("RAHUL", "" + (float) (-(1 - position)*0.5*pageWidth));
+                //mCenterBox.setTranslationX((float) (-(1 - position) * 0.3 * pageWidth));
+                if(!mOnSecondPageSelected) {
+
+                    Log.d("POSITION", "" + (float) (-(1 - position) * 0.5 * pageWidth) + " " + page.toString());
+                    float pos=(float) (-(1 - position) * 0.5 * pageWidth);
+                    if(pos>(-1*mCamcordOriginalX))
+                    mCamcordImage.setTranslationX((float) (-(1 - position) * 0.5 * pageWidth));
+
+                }
+            } else {
+
+            }
+            Log.d("NOW POS",""+mCamcordImage.getX());
+        }
+    }
+
+    public class ScreenSlideFragment extends Fragment {
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            Bundle args = getArguments();
+            int position = args.getInt("position");
+            int layoutId = getLayoutId(position);
+
+
+            ViewGroup rootView = (ViewGroup) inflater.inflate(layoutId, container, false);
+            if (position == 0) {
+
+                initFirstScreenViews(rootView,savedInstanceState);
+            }
+
+            return rootView;
+        }
+
+        private int getLayoutId(int position) {
+
+            int id = 0;
+            if (position == 0) {
+
+                id = R.layout.first_screen;
+
+            } else if (position == 1) {
+
+                id = R.layout.second_screen;
+            } else if (position == 2) {
+
+                id = R.layout.third_screen;
+            }
+            return id;
+        }
+
+
+    }
+
+    private void initFirstScreenViews(View rootView,Bundle savedInstanceState) {
+
+        Log.d("RAHUL","CALLED");
+        mCenterBox = (ImageView) rootView.findViewById(R.id.center_box);
+        mCamcordImage = (ImageView) rootView.findViewById(R.id.imageView);
+        mClockImage = (ImageView) rootView.findViewById(R.id.imageView6);
+        mGraphImage = (ImageView) rootView.findViewById(R.id.imageView3);
+        mAudioImage = (ImageView) rootView.findViewById(R.id.imageView4);
+        mQuoteImage = (ImageView) rootView.findViewById(R.id.imageView5);
+        mMapImage = (ImageView) rootView.findViewById(R.id.imageView2);
+        mWordPressImage = (ImageView) rootView.findViewById(R.id.imageView7);
+
+        Log.d("rag", "INITIALIXWD");
+
+        mCamcordImage.setAlpha(0f);
+
+        rootView.post(new Runnable() {
+            @Override
+            public void run() {
+
+                mCamcordOriginalX = mCamcordImage.getX();
+                Log.d("RAGUL", "" + mCamcordOriginalX);
+            }
+        });
+
+        if(savedInstanceState==null)
+          doFadeAnimation();
+
+        //mCamcordImage.setTranslationX(-65);
+
+    }
+
+    private void doFadeAnimation(){
+
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
+        fadeIn.setDuration(200);
+        //fadeIn.start();
+
+        AnimatorSet mAnimationSet = new AnimatorSet();
+
+        mAnimationSet.play(fadeIn);
+
+    mAnimationSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Log.d("RAHUL","END");
+                super.onAnimationEnd(animation);
+                //mOnSecondPageSelected=false;
+            }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+            super.onAnimationCancel(animation);
+            Log.d("RAHUL","cancel");
+        }
+    });
+        mAnimationSet.start();
+
+
+//        AnimatorSet mAnimationSet = new AnimatorSet();
+//        mAnimationSet.play(fadeIn);
+//        mAnimationSet.start();
     }
 }
