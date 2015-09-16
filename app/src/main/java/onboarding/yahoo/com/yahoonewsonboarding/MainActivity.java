@@ -1,7 +1,5 @@
 package onboarding.yahoo.com.yahoonewsonboarding;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -21,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 3;
@@ -39,9 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mWordPressImage;
 
 
-    private boolean mOnSecondPageSelected;
-
-    private float mCamcordOriginalX;
+    private boolean mSecondPageSelected;
+    private HashMap<ImageView,Float>mOriginalXValuesMap=new HashMap<>();
     private  int mSelectedPosition=-1;
 
     @Override
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mPager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager()));
         setIndicatorLayout();
         setPageChangeListener(mPager);
-        mPager.setPageTransformer(true, new CustomTransformer());
+
         //mPager.setOffscreenPageLimit(2);
 
     }
@@ -101,18 +100,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-                Log.d("RAHUL","selected");
-                if(position==1){
+                if (position == 1) {
+                    mSelectedPosition = -1;
+                    mSecondPageSelected = true;
+                    setViewsInOriginalPosition();
 
-                    Log.d("RAGUL","CAME");
-                    mOnSecondPageSelected=true;
-                    //Log.d("VIEW",""+mCamcordImage.toString());
-                    mCamcordImage.setX(mCamcordOriginalX);
-                    mCamcordImage.setAlpha(0f);
                 }
-                if(position==0){
+                if (position == 0) {
+                    mSelectedPosition = 0;
                     doFadeAnimation();
-                    mOnSecondPageSelected=false;
+                    //mOnSecondPageSelected=false;
                     //mOnSecondPageSelected=false;
                 }
 
@@ -129,13 +126,27 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
 
-//                if(mSelectedPosition==0 && state==ViewPager.SCROLL_STATE_IDLE){
-//
-//                    mOnSecondPageSelected=false;
-//                }
+                if (mSelectedPosition == 0 && state == ViewPager.SCROLL_STATE_IDLE) {
+
+                    mSecondPageSelected = false;
+                }
 
             }
         });
+
+    }
+
+    private void setViewsInOriginalPosition(){
+
+        mCamcordImage.setX(mOriginalXValuesMap.get(mCamcordImage));
+        mClockImage.setX(mOriginalXValuesMap.get(mClockImage));
+        mGraphImage.setX(mOriginalXValuesMap.get(mGraphImage));
+        mAudioImage.setX(mOriginalXValuesMap.get(mAudioImage));
+        mQuoteImage.setX(mOriginalXValuesMap.get(mQuoteImage));
+        mMapImage.setX(mOriginalXValuesMap.get(mMapImage));
+        mWordPressImage.setX(mOriginalXValuesMap.get(mWordPressImage));
+
+        initializeAlpha();
 
     }
 
@@ -200,18 +211,19 @@ public class MainActivity extends AppCompatActivity {
 
                 //Log.d("RAHUL", "" + (float) (-(1 - position)*0.5*pageWidth));
                 //mCenterBox.setTranslationX((float) (-(1 - position) * 0.3 * pageWidth));
-                if(!mOnSecondPageSelected) {
+                if(!mSecondPageSelected) {
 
                     Log.d("POSITION", "" + (float) (-(1 - position) * 0.5 * pageWidth) + " " + page.toString());
                     float pos=(float) (-(1 - position) * 0.5 * pageWidth);
-                    if(pos>(-1*mCamcordOriginalX))
-                    mCamcordImage.setTranslationX((float) (-(1 - position) * 0.5 * pageWidth));
+                    if(pos>(-1*mOriginalXValuesMap.get(mCamcordImage))) {
+                        mCamcordImage.setTranslationX((float) (-(1 - position) * 0.5 * pageWidth));
+                    }
 
                 }
             } else {
 
             }
-            Log.d("NOW POS",""+mCamcordImage.getX());
+            //Log.d("NOW POS",""+mCamcordImage.getX());
         }
     }
 
@@ -256,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initFirstScreenViews(View rootView,Bundle savedInstanceState) {
+    private void initFirstScreenViews(View rootView, final Bundle savedInstanceState) {
 
         Log.d("RAHUL","CALLED");
         mCenterBox = (ImageView) rootView.findViewById(R.id.center_box);
@@ -270,48 +282,102 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("rag", "INITIALIXWD");
 
-        mCamcordImage.setAlpha(0f);
+        initializeAlpha();
 
         rootView.post(new Runnable() {
             @Override
             public void run() {
 
-                mCamcordOriginalX = mCamcordImage.getX();
-                Log.d("RAGUL", "" + mCamcordOriginalX);
+                getOriginalXValues(savedInstanceState);
+
             }
         });
 
-        if(savedInstanceState==null)
-          doFadeAnimation();
+        if(savedInstanceState==null) {
+            doFadeAnimation();
+        }
 
-        //mCamcordImage.setTranslationX(-65);
+    }
 
+    private void getOriginalXValues(Bundle savedInstanceState){
+
+        mOriginalXValuesMap.put(mCamcordImage,mCamcordImage.getX());
+        mOriginalXValuesMap.put(mClockImage, mClockImage.getX());
+        mOriginalXValuesMap.put(mGraphImage,mGraphImage.getX());
+        mOriginalXValuesMap.put(mAudioImage,mAudioImage.getX());
+        mOriginalXValuesMap.put(mQuoteImage,mQuoteImage.getX());
+        mOriginalXValuesMap.put(mMapImage,mMapImage.getX());
+        mOriginalXValuesMap.put(mWordPressImage, mWordPressImage.getX());
+
+        if(savedInstanceState==null) {
+            mPager.setPageTransformer(true, new CustomTransformer());
+        }
+
+
+    }
+    private void initializeAlpha(){
+
+        mCamcordImage.setAlpha(0f);
+        mClockImage.setAlpha(0f);
+        mGraphImage.setAlpha(0f);
+        mAudioImage.setAlpha(0f);
+        mQuoteImage.setAlpha(0f);
+        mMapImage.setAlpha(0f);
+        mWordPressImage.setAlpha(0f);
     }
 
     private void doFadeAnimation(){
 
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
-        fadeIn.setDuration(200);
-        //fadeIn.start();
+         ObjectAnimator fadeCamcord = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
+        fadeCamcord.setDuration(700);
+
+        ObjectAnimator fadeClock = ObjectAnimator.ofFloat(mClockImage, "alpha", 0f, 1f);
+        fadeClock.setDuration(700);
+
+        ObjectAnimator fadeGraph = ObjectAnimator.ofFloat(mGraphImage, "alpha", 0f, 1f);
+        fadeGraph.setDuration(700);
+
+        ObjectAnimator fadeAudio = ObjectAnimator.ofFloat(mAudioImage, "alpha", 0f, 1f);
+        fadeAudio.setDuration(700);
+
+        ObjectAnimator fadeQuote = ObjectAnimator.ofFloat(mQuoteImage, "alpha", 0f, 1f);
+        fadeQuote.setDuration(700);
+
+        ObjectAnimator fadeMap = ObjectAnimator.ofFloat(mMapImage, "alpha", 0f, 1f);
+        fadeMap.setDuration(700);
+
+        ObjectAnimator fadeWordpress = ObjectAnimator.ofFloat(mWordPressImage, "alpha", 0f, 1f);
+        fadeWordpress.setDuration(700);
+
+        //1 5    3 2  7 6  4
 
         AnimatorSet mAnimationSet = new AnimatorSet();
+        fadeAudio.setStartDelay(150);
+        fadeGraph.setStartDelay(300);
+        fadeWordpress.setStartDelay(600);
+        fadeClock.setStartDelay(900);
+        fadeMap.setStartDelay(1200);
+        fadeQuote.setStartDelay(1500);
 
-        mAnimationSet.play(fadeIn);
+        mAnimationSet.play(fadeCamcord).with(fadeAudio).with(fadeGraph).with(fadeWordpress).with(fadeClock).with(fadeMap).with(fadeQuote);
 
-    mAnimationSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                Log.d("RAHUL","END");
-                super.onAnimationEnd(animation);
-                //mOnSecondPageSelected=false;
-            }
 
-        @Override
-        public void onAnimationCancel(Animator animation) {
-            super.onAnimationCancel(animation);
-            Log.d("RAHUL","cancel");
-        }
-    });
+        //fadeGraph.start();
+
+//    mAnimationSet.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                Log.d("RAHUL","END");
+//                super.onAnimationEnd(animation);
+//                //mOnSecondPageSelected=false;
+//            }
+//
+//        @Override
+//        public void onAnimationCancel(Animator animation) {
+//            super.onAnimationCancel(animation);
+//            Log.d("RAHUL","cancel");
+//        }
+//    });
         mAnimationSet.start();
 
 
