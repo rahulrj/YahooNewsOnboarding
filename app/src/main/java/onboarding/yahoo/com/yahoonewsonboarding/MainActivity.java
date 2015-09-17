@@ -2,6 +2,11 @@ package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -40,8 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private boolean mSecondPageSelected;
-    private HashMap<ImageView,Float>mOriginalXValuesMap=new HashMap<>();
-    private  int mSelectedPosition=-1;
+    private HashMap<ImageView, Float> mOriginalXValuesMap = new HashMap<>();
+    private int mSelectedPosition = -1;
+
+    //Second screen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +144,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setViewsInOriginalPosition(){
+    private void setViewsInOriginalPosition() {
 
+        mCenterBox.setX(mOriginalXValuesMap.get(mCenterBox));
         mCamcordImage.setX(mOriginalXValuesMap.get(mCamcordImage));
         mClockImage.setX(mOriginalXValuesMap.get(mClockImage));
         mGraphImage.setX(mOriginalXValuesMap.get(mGraphImage));
@@ -203,21 +212,16 @@ public class MainActivity extends AppCompatActivity {
         public void transformPage(View page, float position) {
 
             int pageWidth = page.getWidth();
-            Log.d("RAHUL",""+pageWidth);
+            Log.d("RAHUL", "" + pageWidth);
 
             if (position < -1) {
 
             } else if (position <= 1) {
 
-                //Log.d("RAHUL", "" + (float) (-(1 - position)*0.5*pageWidth));
-                //mCenterBox.setTranslationX((float) (-(1 - position) * 0.3 * pageWidth));
-                if(!mSecondPageSelected) {
+                if (!mSecondPageSelected) {
 
-                    Log.d("POSITION", "" + (float) (-(1 - position) * 0.5 * pageWidth) + " " + page.toString());
-                    float pos=(float) (-(1 - position) * 0.5 * pageWidth);
-                    if(pos>(-1*mOriginalXValuesMap.get(mCamcordImage))) {
-                        mCamcordImage.setTranslationX((float) (-(1 - position) * 0.5 * pageWidth));
-                    }
+                    moveTheSpheres(position, pageWidth);
+
 
                 }
             } else {
@@ -225,6 +229,52 @@ public class MainActivity extends AppCompatActivity {
             }
             //Log.d("NOW POS",""+mCamcordImage.getX());
         }
+    }
+
+    private void moveTheSpheres(float position, int pageWidth) {
+
+        //Log.d("POSITION", "" + (float) (-(1 - position) * 0.5 * pageWidth));
+
+//        float centerBoxPos = (float) (-(1 - position) * 0.10 * pageWidth);
+//        if (centerBoxPos > (-1 * mOriginalXValuesMap.get(mCenterBox))) {
+//            mCenterBox.setTranslationX(centerBoxPos);
+//        }
+
+//        float camcordPos = (float) (-(1 - position) * 0.15 * pageWidth);
+//        if (camcordPos > (-1 * mOriginalXValuesMap.get(mCamcordImage))) {
+//            mCamcordImage.setTranslationX(camcordPos);
+//        }
+//        float clockPos = (float) (-(1 - position) * 0.05 * pageWidth);
+//        if (clockPos > (-1 * mOriginalXValuesMap.get(mClockImage))) {
+//            mClockImage.setTranslationX(clockPos);
+//        }
+
+//        float graphPos = (float) (-(1 - position) * 0.03 * pageWidth);
+//        if (graphPos > (-1 * mOriginalXValuesMap.get(mGraphImage))) {
+//            mGraphImage.setTranslationX(graphPos);
+//        }
+
+        float audioPos = (float) (-(1 - position) * 0.000005 * pageWidth);
+        if (audioPos > (-1 * mOriginalXValuesMap.get(mAudioImage))) {
+            mAudioImage.setTranslationX(audioPos);
+        }
+
+//        float quotePos = (float) (-(1 - position) * 0.37 * pageWidth);
+//        if (quotePos > (-1 * mOriginalXValuesMap.get(mQuoteImage))) {
+//            mQuoteImage.setTranslationX(quotePos);
+//        }
+//
+//        float mapPos = (float) (-(1 - position) * 1.1 * pageWidth);
+//        if (mapPos > (-1 * mOriginalXValuesMap.get(mMapImage))) {
+//            mMapImage.setTranslationX(mapPos);
+//        }
+//
+//        float wordpressPos = (float) (-(1 - position) * 0.37 * pageWidth);
+//        if (wordpressPos > (-1 * mOriginalXValuesMap.get(mWordPressImage))) {
+//            mWordPressImage.setTranslationX(wordpressPos);
+//        }
+
+
     }
 
     public class ScreenSlideFragment extends Fragment {
@@ -242,7 +292,11 @@ public class MainActivity extends AppCompatActivity {
             ViewGroup rootView = (ViewGroup) inflater.inflate(layoutId, container, false);
             if (position == 0) {
 
-                initFirstScreenViews(rootView,savedInstanceState);
+                initFirstScreenViews(rootView, savedInstanceState);
+            }
+            if(position==1){
+
+                initSecondScreenViews(rootView,savedInstanceState);
             }
 
             return rootView;
@@ -270,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFirstScreenViews(View rootView, final Bundle savedInstanceState) {
 
-        Log.d("RAHUL","CALLED");
+        Log.d("RAHUL", "CALLED");
         mCenterBox = (ImageView) rootView.findViewById(R.id.center_box);
         mCamcordImage = (ImageView) rootView.findViewById(R.id.imageView);
         mClockImage = (ImageView) rootView.findViewById(R.id.imageView6);
@@ -293,29 +347,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             doFadeAnimation();
         }
 
     }
 
-    private void getOriginalXValues(Bundle savedInstanceState){
+    private void getOriginalXValues(Bundle savedInstanceState) {
 
-        mOriginalXValuesMap.put(mCamcordImage,mCamcordImage.getX());
+        mOriginalXValuesMap.put(mCenterBox, mCenterBox.getX());
+        mOriginalXValuesMap.put(mCamcordImage, mCamcordImage.getX());
         mOriginalXValuesMap.put(mClockImage, mClockImage.getX());
-        mOriginalXValuesMap.put(mGraphImage,mGraphImage.getX());
-        mOriginalXValuesMap.put(mAudioImage,mAudioImage.getX());
-        mOriginalXValuesMap.put(mQuoteImage,mQuoteImage.getX());
-        mOriginalXValuesMap.put(mMapImage,mMapImage.getX());
+        mOriginalXValuesMap.put(mGraphImage, mGraphImage.getX());
+        mOriginalXValuesMap.put(mAudioImage, mAudioImage.getX());
+        mOriginalXValuesMap.put(mQuoteImage, mQuoteImage.getX());
+        mOriginalXValuesMap.put(mMapImage, mMapImage.getX());
         mOriginalXValuesMap.put(mWordPressImage, mWordPressImage.getX());
 
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             mPager.setPageTransformer(true, new CustomTransformer());
         }
 
 
     }
-    private void initializeAlpha(){
+
+    private void initializeAlpha() {
 
         mCamcordImage.setAlpha(0f);
         mClockImage.setAlpha(0f);
@@ -326,9 +382,9 @@ public class MainActivity extends AppCompatActivity {
         mWordPressImage.setAlpha(0f);
     }
 
-    private void doFadeAnimation(){
+    private void doFadeAnimation() {
 
-         ObjectAnimator fadeCamcord = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
+        ObjectAnimator fadeCamcord = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
         fadeCamcord.setDuration(700);
 
         ObjectAnimator fadeClock = ObjectAnimator.ofFloat(mClockImage, "alpha", 0f, 1f);
@@ -360,29 +416,55 @@ public class MainActivity extends AppCompatActivity {
         fadeQuote.setStartDelay(1500);
 
         mAnimationSet.play(fadeCamcord).with(fadeAudio).with(fadeGraph).with(fadeWordpress).with(fadeClock).with(fadeMap).with(fadeQuote);
-
-
-        //fadeGraph.start();
-
-//    mAnimationSet.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                Log.d("RAHUL","END");
-//                super.onAnimationEnd(animation);
-//                //mOnSecondPageSelected=false;
-//            }
-//
-//        @Override
-//        public void onAnimationCancel(Animator animation) {
-//            super.onAnimationCancel(animation);
-//            Log.d("RAHUL","cancel");
-//        }
-//    });
         mAnimationSet.start();
 
 
 //        AnimatorSet mAnimationSet = new AnimatorSet();
 //        mAnimationSet.play(fadeIn);
 //        mAnimationSet.start();
+    }
+
+    private void initSecondScreenViews(View rootView,Bundle savedInstanceState){
+
+        final RelativeLayout secondScreenRoot=(RelativeLayout)rootView.findViewById(R.id.root);
+        final ImageView centerBox=(ImageView)rootView.findViewById(R.id.center_box);
+        final ImageView drawingImageView=(ImageView)rootView.findViewById(R.id.drawingImageView);
+
+        centerBox.post(new Runnable() {
+            @Override
+            public void run() {
+
+                drawCircle(drawingImageView,centerBox,secondScreenRoot);
+            }
+        });
+
+
+
+    }
+
+    private void drawCircle(ImageView drawingView,ImageView centerBox,RelativeLayout rootView){
+
+        Bitmap bitmap = Bitmap.createBitmap((int) getWindowManager()
+                .getDefaultDisplay().getWidth(), (int) getWindowManager()
+                .getDefaultDisplay().getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawingView.setImageBitmap(bitmap);
+
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        DashPathEffect dashPath = new DashPathEffect(new float[]{7,7}, (float)1.0);
+
+        p.setPathEffect(dashPath);
+        p.setStyle(Paint.Style.STROKE);
+
+//        TextView view=new TextView(MainActivity.this);
+//        view.setX(centerBox.getX() + centerBox.getWidth() / 2);
+//        view.setY(centerBox.getY() + centerBox.getHeight() / 2);
+//        view.setText("Rahul");
+//        rootView.addView(view);
+
+
+        Log.d("MEASURE",centerBox.getTop()+" "+centerBox.getHeight());
+        canvas.drawCircle(centerBox.getX()+centerBox.getWidth()/2, centerBox.getY()+centerBox.getHeight()/2+80, 360, p);
     }
 }
