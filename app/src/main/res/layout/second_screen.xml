@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="160dp"
-        android:id="@+id/center_box"
+        android:id="@+id/center_box_second"
         android:background="#0000AA"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp"
@@ -20,6 +20,11 @@
         android:id="@+id/drawingImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <onboarding.yahoo.com.yahoonewsonboarding.AnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/animation_view"/>
 
 
 
@@ -32,7 +37,7 @@
         android:text="@string/second_title"
         android:textSize="@dimen/text_26"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/center_box"
+        android:layout_below="@+id/center_box_second"
         android:layout_marginTop="@dimen/dimen_30"
         />
 

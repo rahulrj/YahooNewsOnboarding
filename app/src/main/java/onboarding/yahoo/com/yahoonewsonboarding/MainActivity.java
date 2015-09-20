@@ -2,11 +2,6 @@ package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private int mSelectedPosition = -1;
 
     //Second screen
+    private AnimationView mAnimationView;
+    private float mPreviousPositionOffset;
+    private boolean mViewPagerScrollingLeft;
+    private int mPreviousPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setUpViews();
+
 
     }
 
@@ -100,8 +100,34 @@ public class MainActivity extends AppCompatActivity {
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            int oldPos = mPager.getCurrentItem();
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+
+//                // Log.d("RAHUL",""+position+" "+positionOffset);
+//                if (positionOffset > mPreviousPositionOffset || (mPreviousPositionOffset>0.5f && positionOffset==0)) {
+//                    //Log.d("RAHUL","LEFT");
+//                    mViewPagerScrollingLeft = true;
+//                }
+//                if (positionOffset < mPreviousPositionOffset ||(mPreviousPositionOffset==0f && positionOffset>0.5f)) {
+//                    //Log.d("RAHUL","RIGHT");
+//                    mViewPagerScrollingLeft = false;
+//
+//                }
+
+                if((positionOffset>mPreviousPositionOffset && position==mPreviousPosition)  || ( positionOffset<mPreviousPositionOffset && position>mPreviousPosition)){
+                    mViewPagerScrollingLeft=true;
+                }
+
+                else if(positionOffset<mPreviousPositionOffset){
+
+                    mViewPagerScrollingLeft=false;
+                }
+                mPreviousPositionOffset = positionOffset;
+                mPreviousPosition=position;
 
             }
 
@@ -109,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
 
                 if (position == 1) {
-                    mSelectedPosition = -1;
+                    mSelectedPosition = 1;
                     mSecondPageSelected = true;
                     setViewsInOriginalPosition();
 
@@ -212,7 +238,19 @@ public class MainActivity extends AppCompatActivity {
         public void transformPage(View page, float position) {
 
             int pageWidth = page.getWidth();
-            Log.d("RAHUL", "" + pageWidth);
+            //Log.d("RAHUL", "" + pageWidth);
+
+            if((mViewPagerScrollingLeft && page.findViewById(R.id.center_box)!=null)) {
+                animateSecondScreen(position, pageWidth, 0);
+                //Log.d("RAHUL","ANIMTE CLOCK");
+            }
+
+            if(!mViewPagerScrollingLeft && page.findViewById(R.id.center_box_second)!=null){
+
+                //Log.d("RAHUL","ANIMTE ANTI-CLOCK");
+                animateSecondScreen(position, pageWidth, 1);
+            }
+
 
             if (position < -1) {
 
@@ -222,8 +260,9 @@ public class MainActivity extends AppCompatActivity {
 
                     moveTheSpheres(position, pageWidth);
 
-
                 }
+
+
             } else {
 
             }
@@ -259,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
             mAudioImage.setTranslationX(audioPos);
         }
 
+
 //        float quotePos = (float) (-(1 - position) * 0.37 * pageWidth);
 //        if (quotePos > (-1 * mOriginalXValuesMap.get(mQuoteImage))) {
 //            mQuoteImage.setTranslationX(quotePos);
@@ -275,7 +315,19 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
+
     }
+
+    private void animateSecondScreen(float position, int pageWidth,int direction){
+
+        if(direction==0) {
+            mAnimationView.animateSecondScreenClock(position);
+        }
+        else{
+            mAnimationView.animateSecondScreenAntiClock(position);
+        }
+    }
+
 
     public class ScreenSlideFragment extends Fragment {
 
@@ -427,14 +479,22 @@ public class MainActivity extends AppCompatActivity {
     private void initSecondScreenViews(View rootView,Bundle savedInstanceState){
 
         final RelativeLayout secondScreenRoot=(RelativeLayout)rootView.findViewById(R.id.root);
-        final ImageView centerBox=(ImageView)rootView.findViewById(R.id.center_box);
+        final ImageView centerBox=(ImageView)rootView.findViewById(R.id.center_box_second);
         final ImageView drawingImageView=(ImageView)rootView.findViewById(R.id.drawingImageView);
+        mAnimationView=(AnimationView)rootView.findViewById(R.id.animation_view);
+
+        centerBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //animateSecondScreen();
+            }
+        });
 
         centerBox.post(new Runnable() {
             @Override
             public void run() {
 
-                drawCircle(drawingImageView,centerBox,secondScreenRoot);
+                //drawCircle(drawingImageView,centerBox,secondScreenRoot);
             }
         });
 
@@ -442,29 +502,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void drawCircle(ImageView drawingView,ImageView centerBox,RelativeLayout rootView){
-
-        Bitmap bitmap = Bitmap.createBitmap((int) getWindowManager()
-                .getDefaultDisplay().getWidth(), (int) getWindowManager()
-                .getDefaultDisplay().getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawingView.setImageBitmap(bitmap);
-
-        Paint p = new Paint();
-        p.setColor(Color.BLACK);
-        DashPathEffect dashPath = new DashPathEffect(new float[]{7,7}, (float)1.0);
-
-        p.setPathEffect(dashPath);
-        p.setStyle(Paint.Style.STROKE);
-
-//        TextView view=new TextView(MainActivity.this);
-//        view.setX(centerBox.getX() + centerBox.getWidth() / 2);
-//        view.setY(centerBox.getY() + centerBox.getHeight() / 2);
-//        view.setText("Rahul");
-//        rootView.addView(view);
-
-
-        Log.d("MEASURE",centerBox.getTop()+" "+centerBox.getHeight());
-        canvas.drawCircle(centerBox.getX()+centerBox.getWidth()/2, centerBox.getY()+centerBox.getHeight()/2+80, 360, p);
-    }
+//    private TextView sampleView;
+//    private void drawCircle(ImageView drawingView,ImageView centerBox,RelativeLayout rootView){
+//
+//        Bitmap bitmap = Bitmap.createBitmap((int) getWindowManager()
+//                .getDefaultDisplay().getWidth(), (int) getWindowManager()
+//                .getDefaultDisplay().getHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(bitmap);
+//        drawingView.setImageBitmap(bitmap);
+//
+//        Paint p = new Paint();
+//        p.setColor(Color.BLACK);
+//        DashPathEffect dashPath = new DashPathEffect(new float[]{7,7}, (float)1.0);
+//
+//        p.setPathEffect(dashPath);
+//        p.setStyle(Paint.Style.STROKE);
+//
+//        sampleView=new TextView(MainActivity.this);
+//        sampleView.setX(320);
+//        sampleView.setY(40);
+//        sampleView.setText("Rahul");
+//        rootView.addView(sampleView);
+//
+//
+//
+//        Log.d("MEASURE",centerBox.getX()+centerBox.getWidth()/2+" "+centerBox.getY()+centerBox.getHeight()/2+80);
+//        canvas.drawCircle(centerBox.getX()+centerBox.getWidth()/2, centerBox.getY()+centerBox.getHeight()/2+80, 360, p);
+//    }
 }
