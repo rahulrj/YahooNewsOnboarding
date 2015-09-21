@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ public class ThirdScreenView extends View {
 
     Matrix matrix;
 
+    private boolean mShouldSpheresRotate=true;
+
     public ThirdScreenView(Context context) {
         super(context);
         initMyView();
@@ -54,8 +57,8 @@ public class ThirdScreenView extends View {
 
     public void initMyView(){
         paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStrokeWidth(1);
+        paint.setColor(Color.TRANSPARENT);
+//        paint.setStrokeWidth(1);
         paint.setStyle(Paint.Style.STROKE);
 
         bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
@@ -64,6 +67,8 @@ public class ThirdScreenView extends View {
         mBitmap4 = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         mBitmap5 = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         mBitmap6 = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+
 
         bm_offsetX = bm.getWidth()/2;
         bm_offsetY = bm.getHeight()/2;
@@ -92,16 +97,19 @@ public class ThirdScreenView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        canvas.drawPath(animPath, paint);
+        Log.d("PERMISSION",""+mShouldSpheresRotate);
+        if(mShouldSpheresRotate) {
+            canvas.drawPath(animPath, paint);
 
-        drawCircle(canvas,0+step);
-        drawCircle(canvas,pathLength/6+step);
-        drawCircle(canvas,pathLength/3+step);
-        drawCircle(canvas,pathLength/2+step);
-        drawCircle(canvas,(2*pathLength)/3+step);
-        drawCircle(canvas, (5 * pathLength) / 6+step);
+            drawCircle(canvas, 0 + step);
+            drawCircle(canvas, pathLength / 6 + step);
+            drawCircle(canvas, pathLength / 3 + step);
+            drawCircle(canvas, pathLength / 2 + step);
+            drawCircle(canvas, (2 * pathLength) / 3 + step);
+            drawCircle(canvas, (5 * pathLength) / 6 + step);
 
-        invalidate();
+            invalidate();
+        }
 
 
     }
@@ -125,6 +133,11 @@ public class ThirdScreenView extends View {
             step=0;
         }
 
+    }
+
+    public void setRotatingPermission(boolean permission){
+
+        mShouldSpheresRotate=permission;
     }
 
 }

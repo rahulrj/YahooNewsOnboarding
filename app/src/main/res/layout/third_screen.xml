@@ -9,6 +9,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/round_view"/>
 
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="160dp"
+        android:id="@+id/center_box_third"
+        android:background="#0000AA"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="55dp"
+        android:visibility="invisible"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,8 +26,8 @@
         android:text="@string/third_title"
         android:textSize="@dimen/text_26"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/round_view"
         android:layout_marginTop="@dimen/dimen_30"
+        android:layout_below="@+id/center_box_third"
         />
 
 
@@ -33,7 +43,9 @@
         android:layout_below="@+id/title_text"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"/>
 
 
 

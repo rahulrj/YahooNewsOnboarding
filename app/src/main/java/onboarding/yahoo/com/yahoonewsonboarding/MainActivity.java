@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean mViewPagerScrollingLeft;
     private int mPreviousPosition;
 
+
+    // Third screen
+    private boolean mShouldSpheresRotate=true;
+    private ThirdScreenView mRoundView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +164,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+                if(state==ViewPager.SCROLL_STATE_DRAGGING){
+                    mShouldSpheresRotate=false;
+                }
+                else{
+                    mShouldSpheresRotate=true;
+                }
+                if(mRoundView!=null){
+                    mRoundView.setRotatingPermission(mShouldSpheresRotate);
+                }
 
                 if (mSelectedPosition == 0 && state == ViewPager.SCROLL_STATE_IDLE) {
 
@@ -348,7 +362,11 @@ public class MainActivity extends AppCompatActivity {
             }
             if(position==1){
 
-                initSecondScreenViews(rootView,savedInstanceState);
+                initSecondScreenViews(rootView, savedInstanceState);
+            }
+            if(position==2){
+
+                initThirdScreenViews(rootView,savedInstanceState);
             }
 
             return rootView;
@@ -499,6 +517,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    private void initThirdScreenViews(View rootView,Bundle savedInstanceState){
+
+        mRoundView=(ThirdScreenView)rootView.findViewById(R.id.round_view);
 
     }
 
