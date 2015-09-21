@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,7 @@ public class AnimationView extends View {
 
     Bitmap bm;
     int bm_offsetX, bm_offsetY;
+    int bm_offsetX2,bm_offsetY2;
 
     Path animPath;
     PathMeasure pathMeasure;
@@ -34,6 +36,13 @@ public class AnimationView extends View {
 
     float[] pos;
     float[] tan;
+
+
+    float[]pos2;
+    float[]tan2;
+    Matrix matrix2;
+    Bitmap bm2;
+    PathMeasure pathMeasure2;
 
     Matrix matrix;
     Path.Direction mCurrentDirection = Path.Direction.CW;
@@ -63,8 +72,14 @@ public class AnimationView extends View {
         paint.setPathEffect(dashPath);
 
         bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        bm2 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_logo);
         bm_offsetX = bm.getWidth() / 2;
         bm_offsetY = bm.getHeight() / 2;
+
+
+        bm_offsetX2 = bm2.getWidth() / 2;
+        bm_offsetY2 = bm2.getHeight() / 2;
+
 
 
         initNewPath(Path.Direction.CW);
@@ -74,20 +89,32 @@ public class AnimationView extends View {
         pos = new float[2];
         tan = new float[2];
 
+
+        pos2 = new float[2];
+        tan2 = new float[2];
+
         matrix = new Matrix();
+        matrix2 = new Matrix();
     }
 
     private void initNewPath(Path.Direction dir) {
 
         //animPath.reset();
         animPath = new Path();
-        //RectF rectF=new RectF(80,40,640,600);
-        //animPath.addArc(rectF,90,360);
-        animPath.addCircle(360, 320, 280, dir);
+        RectF rectF=new RectF(80,40,640,600);
+        if(dir== Path.Direction.CW) {
+            animPath.addArc(rectF, 50, 359);
+        }
+        else{
+
+            animPath.addArc(rectF,50,-359);
+        }
+        //animPath.addCircle(360, 320, 280, dir);
 
         animPath.close();
 
         pathMeasure = new PathMeasure(animPath, false);
+        pathMeasure2=new PathMeasure(animPath,false);
         pathLength = pathMeasure.getLength();
 
         Toast.makeText(getContext(), "pathLength: " + pathLength, Toast.LENGTH_LONG).show();
@@ -111,12 +138,36 @@ public class AnimationView extends View {
 
             canvas.drawBitmap(bm, matrix, null);
 
+
             //distance += step;
         } else {
             distance = 0;
         }
 
-        //invalidate();
+
+
+        if(distance<pathLength) {
+
+            matrix.reset();
+            if(distance+pathLength/2<=pathLength) {
+                pathMeasure.getPosTan(distance + pathLength / 2, pos, tan);
+            }
+            else{
+
+                pathMeasure.getPosTan(distance - pathLength / 2, pos, tan);
+            }
+            float degrees2 = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
+            matrix.postRotate(degrees2, bm_offsetX2, bm_offsetY2);
+            matrix.postTranslate(pos[0] - bm_offsetX2, pos[1] - bm_offsetY2);
+
+            canvas.drawBitmap(bm2, matrix, null);
+        }else{
+
+            distance=0;
+        }
+
+
+
 
     }
 
