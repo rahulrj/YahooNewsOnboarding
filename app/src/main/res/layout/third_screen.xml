@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <onboarding.yahoo.com.yahoonewsonboarding.ThirdScreenView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/round_view"/>
 

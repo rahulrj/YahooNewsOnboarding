@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     // Third screen
     private boolean mShouldSpheresRotate=true;
     private ThirdScreenView mRoundView;
+    private boolean mThirdPageSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,9 +167,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if(state==ViewPager.SCROLL_STATE_DRAGGING){
                     mShouldSpheresRotate=false;
+                    //Log.d("DRAG","DRAGGING");
                 }
-                else{
+                else if(state==ViewPager.SCROLL_STATE_IDLE){
                     mShouldSpheresRotate=true;
+                    //Log.d("DRAG","NOT DRAGGING");
                 }
                 if(mRoundView!=null){
                     mRoundView.setRotatingPermission(mShouldSpheresRotate);
@@ -274,6 +277,11 @@ public class MainActivity extends AppCompatActivity {
 
                     moveTheSpheres(position, pageWidth);
 
+                }
+
+                if(!mShouldSpheresRotate && page.findViewById(R.id.center_box_third)!=null){
+
+                    mRoundView.translateTheSpheres(position,pageWidth);
                 }
 
 

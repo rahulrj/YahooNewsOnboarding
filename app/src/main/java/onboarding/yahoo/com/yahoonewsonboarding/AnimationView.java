@@ -129,7 +129,7 @@ public class AnimationView extends View {
         if (distance < pathLength) {
             pathMeasure.getPosTan(distance, pos, tan);
 
-            Log.d("RAHUl", "" + pos[0] + " " + pos[1] + " " + tan[0] + " " + tan[1]);
+            //Log.d("RAHUl", "" + pos[0] + " " + pos[1] + " " + tan[0] + " " + tan[1]);
 
             matrix.reset();
             float degrees = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
