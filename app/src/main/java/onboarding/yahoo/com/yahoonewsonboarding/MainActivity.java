@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mMapImage;
     private ImageView mWordPressImage;
 
+    private AnimatorSet mAnimatorSet;
+
+    private TextView mTitleText;
+    private TextView mDescText;
+
 
     private boolean mSecondPageSelected;
     private HashMap<ImageView, Float> mOriginalXValuesMap = new HashMap<>();
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private float mPreviousPositionOffset;
     private boolean mViewPagerScrollingLeft;
     private int mPreviousPosition;
+    private BookView mBookView;
 
 
     // Third screen
@@ -144,7 +150,11 @@ public class MainActivity extends AppCompatActivity {
                     mSelectedPosition = 1;
                     mSecondPageSelected = true;
                     setViewsInOriginalPosition();
+                    if(mAnimatorSet!=null) {
+                        mAnimatorSet.cancel();
+                    }
 
+                    animateBookView();
                 }
                 if (position == 0) {
                     mSelectedPosition = 0;
@@ -185,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void animateBookView(){
+
+        mBookView.fadeInTheLines();
     }
 
     private void setViewsInOriginalPosition() {
@@ -296,45 +311,49 @@ public class MainActivity extends AppCompatActivity {
 
         //Log.d("POSITION", "" + (float) (-(1 - position) * 0.5 * pageWidth));
 
-//        float centerBoxPos = (float) (-(1 - position) * 0.10 * pageWidth);
+//        float centerBoxPos = (float) (-(1 - position) * 0.80 * pageWidth);
 //        if (centerBoxPos > (-1 * mOriginalXValuesMap.get(mCenterBox))) {
 //            mCenterBox.setTranslationX(centerBoxPos);
 //        }
 
-//        float camcordPos = (float) (-(1 - position) * 0.15 * pageWidth);
-//        if (camcordPos > (-1 * mOriginalXValuesMap.get(mCamcordImage))) {
-//            mCamcordImage.setTranslationX(camcordPos);
-//        }
-//        float clockPos = (float) (-(1 - position) * 0.05 * pageWidth);
-//        if (clockPos > (-1 * mOriginalXValuesMap.get(mClockImage))) {
-//            mClockImage.setTranslationX(clockPos);
-//        }
+        float camcordPos = (float) ((1 - position) * 0.15 * pageWidth);
+        if (camcordPos > (-1 * mOriginalXValuesMap.get(mCamcordImage))) {
+            mCamcordImage.setTranslationX(camcordPos);
+        }
 
-//        float graphPos = (float) (-(1 - position) * 0.03 * pageWidth);
-//        if (graphPos > (-1 * mOriginalXValuesMap.get(mGraphImage))) {
-//            mGraphImage.setTranslationX(graphPos);
-//        }
+        //mCamcordImage.setTranslationX(1.5f);
+        Log.d("RAHUL",""+mCamcordImage.getX()+" "+mCenterBox.getX());
 
-        float audioPos = (float) (-(1 - position) * 0.000005 * pageWidth);
+        float clockPos = (float) ((1 - position) * 0.50 * pageWidth);
+        if (clockPos > (-1 * mOriginalXValuesMap.get(mClockImage))) {
+            mClockImage.setTranslationX(clockPos);
+        }
+
+        float graphPos = (float) ((1 - position) * 0.30 * pageWidth);
+        if (graphPos > (-1 * mOriginalXValuesMap.get(mGraphImage))) {
+            mGraphImage.setTranslationX(graphPos);
+        }
+
+        float audioPos = (float) ((1 - position) * 0.30 * pageWidth);
         if (audioPos > (-1 * mOriginalXValuesMap.get(mAudioImage))) {
             mAudioImage.setTranslationX(audioPos);
         }
 
 
-//        float quotePos = (float) (-(1 - position) * 0.37 * pageWidth);
-//        if (quotePos > (-1 * mOriginalXValuesMap.get(mQuoteImage))) {
-//            mQuoteImage.setTranslationX(quotePos);
-//        }
-//
-//        float mapPos = (float) (-(1 - position) * 1.1 * pageWidth);
-//        if (mapPos > (-1 * mOriginalXValuesMap.get(mMapImage))) {
-//            mMapImage.setTranslationX(mapPos);
-//        }
-//
-//        float wordpressPos = (float) (-(1 - position) * 0.37 * pageWidth);
-//        if (wordpressPos > (-1 * mOriginalXValuesMap.get(mWordPressImage))) {
-//            mWordPressImage.setTranslationX(wordpressPos);
-//        }
+        float quotePos = (float) (-(1 - position) * 0.37 * pageWidth);
+        if (quotePos > (-1 * mOriginalXValuesMap.get(mQuoteImage))) {
+            mQuoteImage.setTranslationX(quotePos);
+        }
+
+        float mapPos = (float) (-(1 - position) * 1.1 * pageWidth);
+        if (mapPos > (-1 * mOriginalXValuesMap.get(mMapImage))) {
+            mMapImage.setTranslationX(mapPos);
+        }
+
+        float wordpressPos = (float) (-(1 - position) * 0.37 * pageWidth);
+        if (wordpressPos > (-1 * mOriginalXValuesMap.get(mWordPressImage))) {
+            mWordPressImage.setTranslationX(wordpressPos);
+        }
 
 
 
@@ -462,6 +481,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void doFadeAnimation() {
 
+
+
         ObjectAnimator fadeCamcord = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
         fadeCamcord.setDuration(700);
 
@@ -485,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
 
         //1 5    3 2  7 6  4
 
-        AnimatorSet mAnimationSet = new AnimatorSet();
+        mAnimatorSet = new AnimatorSet();
         fadeAudio.setStartDelay(150);
         fadeGraph.setStartDelay(300);
         fadeWordpress.setStartDelay(600);
@@ -493,8 +514,10 @@ public class MainActivity extends AppCompatActivity {
         fadeMap.setStartDelay(1200);
         fadeQuote.setStartDelay(1500);
 
-        mAnimationSet.play(fadeCamcord).with(fadeAudio).with(fadeGraph).with(fadeWordpress).with(fadeClock).with(fadeMap).with(fadeQuote);
-        mAnimationSet.start();
+        mAnimatorSet.play(fadeCamcord).with(fadeAudio).with(fadeGraph).with(fadeWordpress).with(fadeClock).with(fadeMap).with(fadeQuote);
+        mAnimatorSet.start();
+
+
 
 
 //        AnimatorSet mAnimationSet = new AnimatorSet();
@@ -505,24 +528,11 @@ public class MainActivity extends AppCompatActivity {
     private void initSecondScreenViews(View rootView,Bundle savedInstanceState){
 
         final RelativeLayout secondScreenRoot=(RelativeLayout)rootView.findViewById(R.id.root);
-        final ImageView centerBox=(ImageView)rootView.findViewById(R.id.center_box_second);
-        final ImageView drawingImageView=(ImageView)rootView.findViewById(R.id.drawingImageView);
+        //final ImageView centerBox=(ImageView)rootView.findViewById(R.id.center_box_second);
+        mBookView=(BookView)rootView.findViewById(R.id.center_box_second);
         mAnimationView=(AnimationView)rootView.findViewById(R.id.animation_view);
 
-        centerBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //animateSecondScreen();
-            }
-        });
 
-        centerBox.post(new Runnable() {
-            @Override
-            public void run() {
-
-                //drawCircle(drawingImageView,centerBox,secondScreenRoot);
-            }
-        });
 
 
 

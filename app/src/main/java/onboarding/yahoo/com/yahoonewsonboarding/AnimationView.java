@@ -101,7 +101,13 @@ public class AnimationView extends View {
 
         //animPath.reset();
         animPath = new Path();
-        RectF rectF=new RectF(80,40,640,600);
+        //RectF rectF=new RectF(80,40,640,600);
+
+        int radius=280;
+        int x=360;int y=340;
+
+        RectF rectF=new RectF(x-radius,y-radius,x+radius,y+radius);
+
         if(dir== Path.Direction.CW) {
             animPath.addArc(rectF, 50, 359);
         }

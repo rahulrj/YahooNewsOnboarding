@@ -14,6 +14,17 @@
         android:layout_alignLeft="@+id/title_text"
         android:layout_alignStart="@+id/title_text" />
 
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/imageView4"
+        android:layout_toLeftOf="@+id/imageView3"
+        android:layout_toStartOf="@+id/imageView3"
+        android:layout_below="@+id/imageView3"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        />
+
 
     <ImageView
         android:layout_width="130dp"
@@ -44,16 +55,7 @@
 
 
 
-    <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/imageView4"
-        android:layout_toLeftOf="@+id/imageView3"
-        android:layout_toStartOf="@+id/imageView3"
-        android:layout_below="@+id/imageView3"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        />
+
 
     <ImageView
         android:layout_width="25dp"
@@ -82,6 +84,16 @@
         android:layout_alignLeft="@+id/imageView5"
         android:layout_alignStart="@+id/imageView5" />
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_layout"
+        android:layout_below="@+id/center_box"
+        android:layout_marginTop="@dimen/dimen_30">
+
+
+    </RelativeLayout>
 
 
     <TextView
