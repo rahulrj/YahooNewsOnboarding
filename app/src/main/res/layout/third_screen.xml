@@ -26,7 +26,7 @@
         android:text="@string/third_title"
         android:textSize="@dimen/text_26"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dimen_30"
+        android:layout_marginTop="50dp"
         android:layout_below="@+id/center_box_third"
         />
 
@@ -46,6 +46,21 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/letsgo"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:text="Let's Go"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@android:color/darker_gray"
+        >
+
+    </Button>
 
 
 

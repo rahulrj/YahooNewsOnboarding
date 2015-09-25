@@ -104,7 +104,7 @@
         android:textSize="@dimen/text_26"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/center_box"
-        android:layout_marginTop="@dimen/dimen_30"
+        android:layout_marginTop="40dp"
         />
 
 

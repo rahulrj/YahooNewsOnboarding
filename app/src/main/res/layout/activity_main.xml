@@ -8,9 +8,11 @@
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_470"
+        android:layout_height="match_parent"
         android:id="@+id/pager"
+        android:background="@android:color/transparent"
         />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,10 +20,13 @@
         android:id="@+id/indicator_layout"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_below="@+id/pager"
-        android:layout_marginTop="@dimen/dimen_20">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        >
 
     </LinearLayout>
+
+
 
 
 

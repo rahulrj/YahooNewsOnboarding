@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPager;
     private LinearLayout mIndicatorLayout;
     private TextView mIndicatorView[];
+
 
 
     private ImageView mCenterBox;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mShouldSpheresRotate=true;
     private ThirdScreenView mRoundView;
     private boolean mThirdPageSelected;
+    private Button mLetsGoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,16 +133,14 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
-                if((positionOffset>mPreviousPositionOffset && position==mPreviousPosition)  || ( positionOffset<mPreviousPositionOffset && position>mPreviousPosition)){
-                    mViewPagerScrollingLeft=true;
-                }
+                if ((positionOffset > mPreviousPositionOffset && position == mPreviousPosition) || (positionOffset < mPreviousPositionOffset && position > mPreviousPosition)) {
+                    mViewPagerScrollingLeft = true;
+                } else if (positionOffset < mPreviousPositionOffset) {
 
-                else if(positionOffset<mPreviousPositionOffset){
-
-                    mViewPagerScrollingLeft=false;
+                    mViewPagerScrollingLeft = false;
                 }
                 mPreviousPositionOffset = positionOffset;
-                mPreviousPosition=position;
+                mPreviousPosition = position;
 
             }
 
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     mSelectedPosition = 1;
                     mSecondPageSelected = true;
                     setViewsInOriginalPosition();
-                    if(mAnimatorSet!=null) {
+                    if (mAnimatorSet != null) {
                         mAnimatorSet.cancel();
                     }
 
@@ -162,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
                     //mOnSecondPageSelected=false;
                     //mOnSecondPageSelected=false;
                 }
+
+
 
                 for (int i = 0; i < mIndicatorView.length; i++) {
                     mIndicatorView[i].setWidth(12);
@@ -175,15 +178,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
-                if(state==ViewPager.SCROLL_STATE_DRAGGING){
-                    mShouldSpheresRotate=false;
+                if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+                    mShouldSpheresRotate = false;
                     //Log.d("DRAG","DRAGGING");
-                }
-                else if(state==ViewPager.SCROLL_STATE_IDLE){
-                    mShouldSpheresRotate=true;
+                } else if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    mShouldSpheresRotate = true;
                     //Log.d("DRAG","NOT DRAGGING");
                 }
-                if(mRoundView!=null){
+                if (mRoundView != null) {
                     mRoundView.setRotatingPermission(mShouldSpheresRotate);
                 }
 
@@ -541,8 +543,25 @@ public class MainActivity extends AppCompatActivity {
     private void initThirdScreenViews(View rootView,Bundle savedInstanceState){
 
         mRoundView=(ThirdScreenView)rootView.findViewById(R.id.round_view);
+        mLetsGoButton=(Button)rootView.findViewById(R.id.letsgo);
 
+        mLetsGoButton.setOnClickListener(clickListener);
     }
+
+    View.OnClickListener clickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()){
+
+                case R.id.letsgo:
+
+                    mRoundView.startNextScreen();
+
+                    break;
+            }
+        }
+    };
 
 //    private TextView sampleView;
 //    private void drawCircle(ImageView drawingView,ImageView centerBox,RelativeLayout rootView){
