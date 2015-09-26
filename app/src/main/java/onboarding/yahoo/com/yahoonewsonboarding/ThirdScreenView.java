@@ -1,6 +1,7 @@
 package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -96,9 +97,15 @@ public class ThirdScreenView extends View {
     private Matrix mLmDarkYellow,mLmDarkGreen,mLmYellow,mLmBlue,mLmLightGreen,mLmPink;
     private FloatWrapper mPlDarkYellow,mPlDarkGreen,mPlYellow,mPlBlue,mPlLightGreen,mPlPink;
     private FloatWrapper mDistDarkYellow,mDistDarkGreen,mDistYellow,mDistBlue,mDistLightGreen,mDistPink;
+    private FloatWrapper mBscDarkYellow,mBscDarkGreen,mBscYellow,mBscBlue,mBscLightGreen,mBscPink;
+
 
     private float mTempDistanceX=20;
     private float mTempDistanceY=20;
+    private boolean mUpperBoundHit;
+    private int mBitmapScaleCounter=0;
+
+    private Context mContext;
 
 
     public ThirdScreenView(Context context) {
@@ -118,8 +125,8 @@ public class ThirdScreenView extends View {
 
     public void initMyView() {
         paint = new Paint();
-        paint.setColor(Color.TRANSPARENT);
-//        paint.setStrokeWidth(1);
+        paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(1);
         paint.setStyle(Paint.Style.STROKE);
 
         bm = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
@@ -169,6 +176,8 @@ public class ThirdScreenView extends View {
         mPathLineLightGreen=new Path();
         mPathLinePink=new Path();
 
+
+
         mPathLineDarkYellow.moveTo(mCircleX,mCircleY);
         mPathLineDarkGreen.moveTo(mCircleX,mCircleY);
         mPathLineYellow.moveTo(mCircleX,mCircleY);
@@ -203,6 +212,13 @@ public class ThirdScreenView extends View {
         mLmBlue=new Matrix();
         mLmLightGreen=new Matrix();
         mLmPink=new Matrix();
+
+        mBscDarkYellow=new FloatWrapper(0f);
+        mBscDarkGreen=new FloatWrapper(0f);
+        mBscYellow=new FloatWrapper(0f);
+        mBscBlue=new FloatWrapper(0f);
+        mBscLightGreen=new FloatWrapper(0f);
+        mBscPink=new FloatWrapper(0f);
 
     }
 
@@ -265,7 +281,9 @@ public class ThirdScreenView extends View {
                 initLinePathVars(mPathLineYellow,pos3,mPmYellow,mLmYellow,mPlYellow);
                 initLinePathVars(mPathLineBlue,pos4,mPmBlue,mLmBlue,mPlBlue);
                 initLinePathVars(mPathLineLightGreen,pos5,mPmLightGreen,mLmLightGreen,mPlLightGreen);
-                initLinePathVars(mPathLinePink,pos6,mPmPink,mLmPink,mPlPink);
+                initLinePathVars(mPathLinePink, pos6, mPmPink, mLmPink, mPlPink);
+
+                //canvas.drawPath(mPathLineDarkYellow,paint);
 
                 UP_COUNTER+=1;
                 mStartNextScreen=true;
@@ -273,13 +291,20 @@ public class ThirdScreenView extends View {
 
             }
 
-            moveCircleInOut(mDistDarkYellow,mPlDarkYellow,mLmDarkYellow,mPmDarkYellow,canvas,bm);
-            moveCircleInOut(mDistDarkGreen,mPlDarkGreen,mLmDarkGreen,mPmDarkGreen,canvas,mBitmap2);
-            moveCircleInOut(mDistYellow,mPlYellow,mLmYellow,mPmYellow,canvas,mBitmap3);
-            moveCircleInOut(mDistBlue,mPlBlue,mLmBlue,mPmBlue,canvas,mBitmap4);
-            moveCircleInOut(mDistLightGreen,mPlLightGreen,mLmLightGreen,mPmLightGreen,canvas,mBitmap5);
-            moveCircleInOut(mDistPink,mPlPink,mLmPink,mPmPink,canvas,mBitmap6);
+            canvas.drawPath(mPathLineDarkYellow,paint);
+            boolean isAnim1Completed=moveCircleInOut(mDistDarkYellow, mPlDarkYellow, mLmDarkYellow, mPmDarkYellow, canvas, bm,mBscDarkYellow);
+            boolean isAnim2Completed= moveCircleInOut(mDistDarkGreen,mPlDarkGreen,mLmDarkGreen,mPmDarkGreen,canvas,mBitmap2,mBscDarkGreen);
+            boolean isAnim3Completed=moveCircleInOut(mDistYellow,mPlYellow,mLmYellow,mPmYellow,canvas,mBitmap3,mBscYellow);
+            boolean isAnim4Completed=moveCircleInOut(mDistBlue,mPlBlue,mLmBlue,mPmBlue,canvas,mBitmap4,mBscBlue);
+            boolean isAnim5Completed=moveCircleInOut(mDistLightGreen,mPlLightGreen,mLmLightGreen,mPmLightGreen,canvas,mBitmap5,mBscLightGreen);
+            boolean isAnim6Completed=moveCircleInOut(mDistPink,mPlPink,mLmPink,mPmPink,canvas,mBitmap6,mBscPink);
 
+
+            if(isAnim1Completed && isAnim2Completed && isAnim3Completed && isAnim4Completed && isAnim5Completed && isAnim6Completed){
+
+                startNewActivity();
+                return;
+            }
 
 //            if(UP_COUNTER==0){
 //
@@ -505,36 +530,85 @@ public class ThirdScreenView extends View {
 
         }
 
-        path.lineTo(pos[0],pos[1]);
+        path.lineTo(pos[0], pos[1]);
         path.lineTo(x, y);
         path.close();
         //tempDist=180;
         //pm = new PathMeasure(path, false);
-        pm.setPath(path,false);
+        pm.setPath(path, false);
         pathLength.floatValue = pm.getLength();
         //matrix=new Matrix();
 
+
+
     }
 
-    private void moveCircleInOut(FloatWrapper distance,FloatWrapper pathLength,Matrix matrix,PathMeasure pathMeasure,Canvas canvas,Bitmap bm){
+    private boolean moveCircleInOut(FloatWrapper distance,FloatWrapper pathLength,Matrix matrix,PathMeasure pathMeasure,Canvas canvas,Bitmap bm,FloatWrapper scaleCounter){
 
 
         float position[]=new float[2];
         float tangent[]=new float[2];
+
+
+        if(distance.floatValue>=(pathLength.floatValue/2)){
+            mUpperBoundHit=true;
+
+        }
+
+        if(mUpperBoundHit){
+
+            int newWidth=(int)(bm.getWidth()-4*(scaleCounter.floatValue/1));
+            int newHeight=(int)(bm.getHeight()-4*(scaleCounter.floatValue/1));
+            if(newWidth>=15 && newHeight >=15) {
+
+
+                //if(mBitmapScaleCounter%5==0){
+
+                    bm = Bitmap.createScaledBitmap(bm, newWidth, newHeight, true);
+                    Log.d("SCALED","CALED"+newWidth+" "+newHeight);
+                //}
+                scaleCounter.floatValue+=1;
+
+            }
+            else{
+
+                bm = Bitmap.createScaledBitmap(bm, newWidth, newHeight, true);
+            }
+
+
+
+        }
+
 
         if (distance.floatValue < pathLength.floatValue) {
             pathMeasure.getPosTan(distance.floatValue, position,tangent);
             matrix.reset();
                 //degrees = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
                 //matrix.postRotate(degrees, bm_offsetX, bm_offsetY);
-            matrix.postTranslate(position[0] - bm_offsetX, position[1] - bm_offsetY);
+            matrix.postTranslate(position[0] - bm.getWidth() / 2, position[1] - bm.getHeight() / 2);
             canvas.drawBitmap(bm, matrix, null);
 
-               distance.floatValue+=1;
-            } else {
+            //Log.d("SCALED",""+bm.getWidth()+" "+bm.getHeight());
+
+
+               if(mUpperBoundHit){
+
+                   distance.floatValue+=10;
+                   Log.d("HIT","TRUE"+" "+distance);
+               }
+            else {
+                   distance.floatValue += 1;
+               }
+        } else {
+
+            return true;
+            //startNewActivity();
                 //originalPos.floatValue = 0f;
-                distance.floatValue-=1;
-            }
+                //distance.floatValue-=1;
+            //mUpperBoundHit=true;
+        }
+
+        return false;
     }
 
     private float[] drawCircle(Canvas canvas, FloatWrapper originalPos, FloatWrapper step, Bitmap bm) {
@@ -592,6 +666,18 @@ public class ThirdScreenView extends View {
         mShouldSpheresRotate=false;
         invalidate();
 
+    }
+
+    public void setContext(Context context){
+
+        mContext=context;
+    }
+
+    private void startNewActivity(){
+
+        Intent i=new Intent(mContext,NewsActivity.class);
+        mContext.startActivity(i);
+        Log.d("STARTED","true");
     }
 
     static class FloatWrapper {

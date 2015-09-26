@@ -546,6 +546,7 @@ public class MainActivity extends AppCompatActivity {
         mLetsGoButton=(Button)rootView.findViewById(R.id.letsgo);
 
         mLetsGoButton.setOnClickListener(clickListener);
+        mRoundView.setContext(this);
     }
 
     View.OnClickListener clickListener=new View.OnClickListener() {

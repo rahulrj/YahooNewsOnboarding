@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".NewsActivity"/>
+
         <activity
             android:name=".TestActivity"
             android:label="@string/app_name" >
