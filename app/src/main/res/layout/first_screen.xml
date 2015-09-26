@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ImageView
         android:layout_width="wrap_content"
@@ -26,13 +27,28 @@
         />
 
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="240dp"
-        android:id="@+id/center_box"
-        android:background="#0000AA"
+
+    <RelativeLayout
+        android:layout_width="132dp"
+        android:layout_height="242dp"
+        android:id="@+id/center_box_frame"
+        android:background="@android:color/darker_gray"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="70dp">
+
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="240dp"
+            android:id="@+id/center_box"
+            android:background="@mipmap/center_box_first"
+            android:layout_centerInParent="true"
+
+           />
+
+
+    </RelativeLayout>
+
 
     <ImageView
         android:layout_width="wrap_content"
@@ -89,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/text_layout"
-        android:layout_below="@+id/center_box"
+        android:layout_below="@+id/center_box_frame"
         android:layout_marginTop="@dimen/dimen_30">
 
 
@@ -103,8 +119,9 @@
         android:text="@string/first_title"
         android:textSize="@dimen/text_26"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/center_box"
+        android:layout_below="@+id/center_box_frame"
         android:layout_marginTop="40dp"
+        android:textColor="@android:color/black"
         />
 
 
@@ -120,6 +137,7 @@
         android:layout_below="@+id/title_text"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textColor="@android:color/black"/>
 
 </RelativeLayout>

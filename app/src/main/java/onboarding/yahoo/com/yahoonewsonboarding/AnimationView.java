@@ -14,7 +14,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * Created by rahul.raja on 9/19/15.
@@ -71,8 +70,8 @@ public class AnimationView extends View {
 
         paint.setPathEffect(dashPath);
 
-        bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        bm2 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_logo);
+        bm = BitmapFactory.decodeResource(getResources(), R.mipmap.sun);
+        bm2 = BitmapFactory.decodeResource(getResources(), R.mipmap.moon_new);
         bm_offsetX = bm.getWidth() / 2;
         bm_offsetY = bm.getHeight() / 2;
 
@@ -123,7 +122,7 @@ public class AnimationView extends View {
         pathMeasure2=new PathMeasure(animPath,false);
         pathLength = pathMeasure.getLength();
 
-        Toast.makeText(getContext(), "pathLength: " + pathLength, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "pathLength: " + pathLength, Toast.LENGTH_LONG).show();
 
     }
 
@@ -139,7 +138,7 @@ public class AnimationView extends View {
 
             matrix.reset();
             float degrees = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
-            matrix.postRotate(degrees, bm_offsetX, bm_offsetY);
+            //matrix.postRotate(degrees, bm_offsetX, bm_offsetY);
             matrix.postTranslate(pos[0] - bm_offsetX, pos[1] - bm_offsetY);
 
             canvas.drawBitmap(bm, matrix, null);
@@ -163,7 +162,7 @@ public class AnimationView extends View {
                 pathMeasure.getPosTan(distance - pathLength / 2, pos, tan);
             }
             float degrees2 = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
-            matrix.postRotate(degrees2, bm_offsetX2, bm_offsetY2);
+            //matrix.postRotate(degrees2, bm_offsetX2, bm_offsetY2);
             matrix.postTranslate(pos[0] - bm_offsetX2, pos[1] - bm_offsetY2);
 
             canvas.drawBitmap(bm2, matrix, null);

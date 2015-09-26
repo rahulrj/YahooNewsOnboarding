@@ -14,7 +14,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * Created by rahul.raja on 9/21/15.
@@ -129,7 +128,7 @@ public class ThirdScreenView extends View {
         paint.setStrokeWidth(1);
         paint.setStyle(Paint.Style.STROKE);
 
-        bm = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
+        bm = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.multipurpose_square),R.color.dark_yellow);
         mBitmap2 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
         mBitmap3 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
         mBitmap4 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
@@ -151,7 +150,7 @@ public class ThirdScreenView extends View {
         pathMeasure = new PathMeasure(animPath, false);
         pathLength = pathMeasure.getLength();
 
-        Toast.makeText(getContext(), "pathLength: " + pathLength, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "pathLength: " + pathLength, Toast.LENGTH_LONG).show();
 
         step = 1;
         distance = 0;
@@ -632,6 +631,7 @@ public class ThirdScreenView extends View {
         } else {
             originalPos.floatValue = 0f;
             step.floatValue = 0f;
+            //invalidate();
         }
 
         positionArray[0] = pos[0];
@@ -680,15 +680,5 @@ public class ThirdScreenView extends View {
         Log.d("STARTED","true");
     }
 
-    static class FloatWrapper {
-
-        FloatWrapper(Float floatVal) {
-
-            this.floatValue = floatVal;
-        }
-
-        public Float floatValue;
-
-    }
 
 }

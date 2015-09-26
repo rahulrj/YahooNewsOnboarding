@@ -2,7 +2,9 @@ package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPager;
     private LinearLayout mIndicatorLayout;
     private TextView mIndicatorView[];
+    private Drawable mPagerBackground;
 
 
 
@@ -78,11 +81,14 @@ public class MainActivity extends AppCompatActivity {
     private void setUpViews() {
 
         mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerBackground=mPager.getBackground();
         mIndicatorLayout = (LinearLayout) findViewById(R.id.indicator_layout);
 
         mPager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager()));
         setIndicatorLayout();
         setPageChangeListener(mPager);
+        mPager.bringToFront();
+        //mPagerBackground.setAlpha(0);
 
         //mPager.setOffscreenPageLimit(2);
 
@@ -95,19 +101,20 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < dotsCount; i++) {
 
             mIndicatorView[i] = new TextView(this);
-            mIndicatorView[i].setWidth(12);
-            mIndicatorView[i].setHeight(12);
+            mIndicatorView[i].setWidth(22);
+            mIndicatorView[i].setHeight(22);
             mIndicatorView[i].setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 0, 15, 0);
             mIndicatorView[i].setLayoutParams(params);
-            mIndicatorView[i].setBackgroundResource(R.drawable.rounded_cell);
+            mIndicatorView[i].setBackgroundResource(R.drawable.rounded_cell_gray);
             mIndicatorLayout.addView(mIndicatorView[i]);
 
         }
 
-        mIndicatorView[0].setWidth(20);
-        mIndicatorView[0].setHeight(20);
+        //mIndicatorView[0].setWidth(20);
+        //mIndicatorView[0].setHeight(20);
+        mIndicatorView[0].setBackgroundResource(R.drawable.rounded_cell_red);
         mIndicatorView[0].setGravity(Gravity.CENTER);
     }
 
@@ -122,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 
-//                // Log.d("RAHUL",""+position+" "+positionOffset);
+                  Log.d("RAHULPOS",""+position+" "+positionOffset);
 //                if (positionOffset > mPreviousPositionOffset || (mPreviousPositionOffset>0.5f && positionOffset==0)) {
 //                    //Log.d("RAHUL","LEFT");
 //                    mViewPagerScrollingLeft = true;
@@ -142,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
                 mPreviousPositionOffset = positionOffset;
                 mPreviousPosition = position;
 
+
+                if(position==1 && mViewPagerScrollingLeft){
+
+                    mIndicatorLayout.setAlpha(1-positionOffset);
+                }
+                else if(position==1 && !mViewPagerScrollingLeft){
+
+                    mIndicatorLayout.setAlpha(1-positionOffset);
+                }
+
             }
 
             @Override
@@ -151,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     mSelectedPosition = 1;
                     mSecondPageSelected = true;
                     setViewsInOriginalPosition();
+                    //initializeAlpha();
                     if (mAnimatorSet != null) {
                         mAnimatorSet.cancel();
                     }
@@ -159,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (position == 0) {
                     mSelectedPosition = 0;
+                    //setViewsInOriginalPosition();
                     doFadeAnimation();
                     //mOnSecondPageSelected=false;
                     //mOnSecondPageSelected=false;
@@ -167,11 +186,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for (int i = 0; i < mIndicatorView.length; i++) {
-                    mIndicatorView[i].setWidth(12);
-                    mIndicatorView[i].setHeight(12);
+                    mIndicatorView[i].setBackgroundResource(R.drawable.rounded_cell_gray);
+                    //mIndicatorView[i].setHeight(12);
                 }
-                mIndicatorView[position].setWidth(20);
-                mIndicatorView[position].setHeight(20);
+                mIndicatorView[position].setBackgroundResource(R.drawable.rounded_cell_red);
+                //mIndicatorView[position].setHeight(20);
             }
 
 
@@ -290,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
             } else if (position <= 1) {
 
-                if (!mSecondPageSelected) {
+                if (!mSecondPageSelected && page.findViewById(R.id.center_box_second)!=null) {
 
                     moveTheSpheres(position, pageWidth);
 
@@ -447,7 +466,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (savedInstanceState == null) {
-            doFadeAnimation();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    doFadeAnimation();
+                }
+            },700);
+
         }
 
     }
@@ -509,12 +535,12 @@ public class MainActivity extends AppCompatActivity {
         //1 5    3 2  7 6  4
 
         mAnimatorSet = new AnimatorSet();
-        fadeAudio.setStartDelay(150);
-        fadeGraph.setStartDelay(300);
-        fadeWordpress.setStartDelay(600);
-        fadeClock.setStartDelay(900);
-        fadeMap.setStartDelay(1200);
-        fadeQuote.setStartDelay(1500);
+        fadeAudio.setStartDelay(50);
+        fadeGraph.setStartDelay(200);
+        fadeWordpress.setStartDelay(500);
+        fadeClock.setStartDelay(700);
+        fadeMap.setStartDelay(900);
+        fadeQuote.setStartDelay(1100);
 
         mAnimatorSet.play(fadeCamcord).with(fadeAudio).with(fadeGraph).with(fadeWordpress).with(fadeClock).with(fadeMap).with(fadeQuote);
         mAnimatorSet.start();
@@ -547,6 +573,7 @@ public class MainActivity extends AppCompatActivity {
 
         mLetsGoButton.setOnClickListener(clickListener);
         mRoundView.setContext(this);
+
     }
 
     View.OnClickListener clickListener=new View.OnClickListener() {

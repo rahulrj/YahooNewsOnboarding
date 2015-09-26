@@ -2,4 +2,7 @@
 <resources>
 
     <color name="dots_color">#FE2E64</color>
+    <color name="darker_gray">#aaa</color>
+
+    <color name="dark_yellow">#FE9A2E</color>
 </resources>

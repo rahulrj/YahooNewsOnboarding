@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+
+
+    >
 
     <onboarding.yahoo.com.yahoonewsonboarding.ThirdScreenView
         android:layout_width="match_parent"
@@ -28,6 +31,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/center_box_third"
+        android:textColor="@android:color/black"
         />
 
 
@@ -45,7 +49,8 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"/>
+        android:paddingRight="30dp"
+        android:textColor="@android:color/black"/>
 
     <Button
         android:layout_width="match_parent"
@@ -57,7 +62,8 @@
         android:text="Let's Go"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@android:color/darker_gray"
+        android:background="@mipmap/back"
+
         >
 
     </Button>
