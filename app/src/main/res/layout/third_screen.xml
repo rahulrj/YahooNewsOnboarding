@@ -54,7 +54,7 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="52dp"
         android:id="@+id/letsgo"
         android:gravity="center"
         android:layout_alignParentBottom="true"
@@ -62,7 +62,7 @@
         android:text="Let's Go"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@mipmap/back"
+        android:background="@color/button_color"
 
         >
 

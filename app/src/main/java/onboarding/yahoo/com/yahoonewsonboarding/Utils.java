@@ -2,9 +2,6 @@ package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -16,7 +13,7 @@ import android.graphics.RectF;
  */
 public class Utils {
 
-    public static Bitmap getCircularBitmap(Bitmap bitmap,int color){
+    public static Bitmap getCircularBitmap(Bitmap bitmap){
 
 
 
@@ -31,8 +28,6 @@ public class Utils {
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
-        ColorFilter filter = new LightingColorFilter(Color.BLUE, 0);
-        paint.setColorFilter(filter);
         canvas.drawOval(rectF, paint);
 
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));

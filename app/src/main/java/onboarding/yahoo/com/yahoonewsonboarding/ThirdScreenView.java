@@ -22,7 +22,7 @@ public class ThirdScreenView extends View {
 
     Paint paint;
 
-    private float mRadius=180f;
+    private float mRadius=160f;
     private float mCircleX=360f;
     private float mCircleY=360f;
 
@@ -99,8 +99,8 @@ public class ThirdScreenView extends View {
     private FloatWrapper mBscDarkYellow,mBscDarkGreen,mBscYellow,mBscBlue,mBscLightGreen,mBscPink;
 
 
-    private float mTempDistanceX=20;
-    private float mTempDistanceY=20;
+    private float mTempDistanceX=50;
+    private float mTempDistanceY=50;
     private boolean mUpperBoundHit;
     private int mBitmapScaleCounter=0;
 
@@ -124,16 +124,16 @@ public class ThirdScreenView extends View {
 
     public void initMyView() {
         paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.TRANSPARENT);
         paint.setStrokeWidth(1);
         paint.setStyle(Paint.Style.STROKE);
 
-        bm = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.multipurpose_square),R.color.dark_yellow);
-        mBitmap2 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
-        mBitmap3 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
-        mBitmap4 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
-        mBitmap5 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
-        mBitmap6 = BitmapFactory.decodeResource(getResources(), R.mipmap.fb_log);
+        bm = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.dark_yellow_square));
+        mBitmap2 = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.dark_green_square));
+        mBitmap3 =  Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.yellow_square));
+        mBitmap4 = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.blue_square));
+        mBitmap5 = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.light_green_square));
+        mBitmap6 = Utils.getCircularBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.pink_square));
 
 
         bm_offsetX = mBitmap4.getWidth() / 2;
@@ -282,7 +282,12 @@ public class ThirdScreenView extends View {
                 initLinePathVars(mPathLineLightGreen,pos5,mPmLightGreen,mLmLightGreen,mPlLightGreen);
                 initLinePathVars(mPathLinePink, pos6, mPmPink, mLmPink, mPlPink);
 
-                //canvas.drawPath(mPathLineDarkYellow,paint);
+//                canvas.drawPath(mPathLineDarkYellow, paint);
+//                canvas.drawPath(mPathLineDarkGreen,paint);
+//                canvas.drawPath(mPathLineYellow,paint);
+//                canvas.drawPath(mPathLineBlue,paint);
+//                canvas.drawPath(mPathLineLightGreen,paint);
+//                canvas.drawPath(mPathLinePink,paint);
 
                 UP_COUNTER+=1;
                 mStartNextScreen=true;
@@ -497,46 +502,105 @@ public class ThirdScreenView extends View {
         mPathLinePink.moveTo(pos6[0],pos6[1]);
     }
 
+//    private void initLinePathVars(Path path,float[] pos,PathMeasure pm,Matrix matrix,FloatWrapper pathLength){
+//
+//        float x=0f,y=0f;
+//
+//        if(pos[2]>0 && pos[2]<90){
+//
+//            x=pos[0]+mTempDistanceX;
+//            y=pos[1]-mTempDistanceY;
+//
+//        }
+//
+//        if(pos[2]>90 && pos[2]<180){
+//
+//            x=pos[0]+mTempDistanceX;
+//            y=pos[1]+mTempDistanceY;
+//
+//        }
+//
+//        if(pos[2]>-180 && pos[2]<-90){
+//
+//            x=pos[0]-mTempDistanceX;
+//            y=pos[1]+mTempDistanceY;
+//
+//        }
+//
+//        if(pos[2]>-90 && pos[2]<0){
+//
+//            x=pos[0]-mTempDistanceX;
+//            y=pos[1]-mTempDistanceY;
+//
+//        }
+//
+//        path.lineTo(pos[0], pos[1]);
+//        path.lineTo(x, y);
+//        path.close();
+//        pm.setPath(path, false);
+//        pathLength.floatValue = pm.getLength();
+//
+//
+//    }
+
+
     private void initLinePathVars(Path path,float[] pos,PathMeasure pm,Matrix matrix,FloatWrapper pathLength){
 
         float x=0f,y=0f;
 
-        if(pos[2]>0 && pos[2]<90){
+        double len=Math.hypot((pos[0]-360),(pos[1]-360));
 
-            x=pos[0]+mTempDistanceX;
-            y=pos[1]-mTempDistanceY;
+        double dx=(pos[0]-360)/len;
+        double dy=(pos[1]-360)/len;
 
-        }
+        x= (float)(pos[0] + mTempDistanceX * dx);
+        y = (float)(pos[1] + mTempDistanceY * dy);
 
-        if(pos[2]>90 && pos[2]<180){
-
-            x=pos[0]+mTempDistanceX;
-            y=pos[1]+mTempDistanceY;
-
-        }
-
-        if(pos[2]>-180 && pos[2]<-90){
-
-            x=pos[0]-mTempDistanceX;
-            y=pos[1]+mTempDistanceY;
-
-        }
-
-        if(pos[2]>-90 && pos[2]<0){
-
-            x=pos[0]-mTempDistanceX;
-            y=pos[1]-mTempDistanceY;
-
-        }
+//        if(pos[2]>0 && pos[2]<90){
+//
+//            x=pos[0]+mTempDistanceX;
+//            y=findYForX(pos,pos[0]+mTempDistanceX);
+//
+//
+//        }
+//
+//        if(pos[2]>90 && pos[2]<180){
+//
+//            x=pos[0]+mTempDistanceX;
+//            y=findYForX(pos,pos[0]+mTempDistanceX);
+//            //y=pos[1]+mTempDistanceY;
+//
+//        }
+//
+//        if(pos[2]>-180 && pos[2]<-90){
+//
+//            x=pos[0]-mTempDistanceX;
+//            y=findYForX(pos,pos[0]-mTempDistanceX);
+//            //y=pos[1]+mTempDistanceY;
+//
+//        }
+//
+//        if(pos[2]>-90 && pos[2]<0){
+//
+//            x=pos[0]-mTempDistanceX;
+//            y=findYForX(pos,pos[0]-mTempDistanceX);
+//            //y=pos[1]-mTempDistanceY;
+//
+//        }
 
         path.lineTo(pos[0], pos[1]);
         path.lineTo(x, y);
         path.close();
-        //tempDist=180;
-        //pm = new PathMeasure(path, false);
         pm.setPath(path, false);
         pathLength.floatValue = pm.getLength();
-        //matrix=new Matrix();
+
+
+
+    }
+
+
+    private void findYForX(float pos[],float tempX){
+
 
 
 
@@ -556,9 +620,9 @@ public class ThirdScreenView extends View {
 
         if(mUpperBoundHit){
 
-            int newWidth=(int)(bm.getWidth()-4*(scaleCounter.floatValue/1));
-            int newHeight=(int)(bm.getHeight()-4*(scaleCounter.floatValue/1));
-            if(newWidth>=15 && newHeight >=15) {
+            int newWidth=(int)(bm.getWidth()-8*(scaleCounter.floatValue/1));
+            int newHeight=(int)(bm.getHeight()-8*(scaleCounter.floatValue/1));
+            if(newWidth>=5 && newHeight >=5) {
 
 
                 //if(mBitmapScaleCounter%5==0){
@@ -592,11 +656,11 @@ public class ThirdScreenView extends View {
 
                if(mUpperBoundHit){
 
-                   distance.floatValue+=10;
+                   distance.floatValue+=20;
                    Log.d("HIT","TRUE"+" "+distance);
                }
             else {
-                   distance.floatValue += 1;
+                   distance.floatValue += 2;
                }
         } else {
 

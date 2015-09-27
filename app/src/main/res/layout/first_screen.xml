@@ -8,22 +8,23 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="24dp"
+        android:src="@mipmap/graph_circle"
+
         android:id="@+id/imageView3"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignLeft="@+id/title_text"
-        android:layout_alignStart="@+id/title_text" />
+        android:layout_below="@+id/imageView"
+        android:layout_marginLeft="65dp"
+        android:layout_marginTop="90dp"
+        />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/audio_circle"
         android:id="@+id/imageView4"
-        android:layout_toLeftOf="@+id/imageView3"
-        android:layout_toStartOf="@+id/imageView3"
         android:layout_below="@+id/imageView3"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_alignLeft="@+id/imageView3"
+        android:layout_marginTop="10dp"
+
         />
 
 
@@ -53,20 +54,18 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="49dp"
-        android:layout_alignLeft="@+id/title_text"
-        android:layout_alignStart="@+id/title_text"
+        android:src="@mipmap/cam_circle"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="70dp"
         android:id="@+id/imageView" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/map_circle"
         android:layout_marginTop="28dp"
         android:layout_below="@+id/imageView"
-        android:layout_alignRight="@+id/title_text"
-        android:layout_alignEnd="@+id/title_text"
+        android:layout_marginLeft="230dp"
         android:id="@+id/imageView2" />
 
 
@@ -74,31 +73,31 @@
 
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:id="@+id/imageView6"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/clock_circle"
         android:layout_alignTop="@+id/imageView2"
         android:layout_toLeftOf="@+id/imageView4"
         android:layout_toStartOf="@+id/imageView4" />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView2"
-        android:layout_toEndOf="@+id/imageView2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/quote_circle"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignRight="@+id/imageView2"
         android:id="@+id/imageView5" />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/imageView7"
-        android:src="@mipmap/ic_launcher"
-        android:layout_below="@+id/imageView3"
+        android:src="@mipmap/wordpress_circle"
+        android:layout_below="@+id/imageView2"
         android:layout_alignLeft="@+id/imageView5"
-        android:layout_alignStart="@+id/imageView5" />
+        android:layout_alignStart="@+id/imageView5"
+        android:layout_marginTop="40dp"/>
 
 
     <RelativeLayout
@@ -120,7 +119,7 @@
         android:textSize="@dimen/text_26"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/center_box_frame"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:textColor="@android:color/black"
         />
 

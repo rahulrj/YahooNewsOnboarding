@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -15,20 +14,14 @@ import android.view.View;
  */
 public class BookView extends View {
 
-    Paint paint;
-    Paint mDummyPaint;
+    private Paint mBookPaint;
     private Paint mLinesPaint;
     private Bitmap mLine1, mLine2, mLine3, mLine4;
-    private int mSlidingDistance = 0;
+
 
     private final int FADE_INTERVAL = 500;
     private int REFRESH_INTERVAL = 10;
-    private int ALPHA_INCREMENT=14;
-
-    private boolean mFadeFirstLine = false;
-    private boolean mFadeInSecondLine=false;
-    private boolean mFadeInThirdLine=false;
-    private boolean mFadeInFourthLine=false;
+    private int ALPHA_INCREMENT=17;
 
     private Paint mLinesPaintArr[]=new Paint[4];
     private FloatWrapper mFadeInLineArr[]=new FloatWrapper[4];
@@ -50,13 +43,12 @@ public class BookView extends View {
 
 
     public void initMyView() {
-        paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(2);
-        paint.setStyle(Paint.Style.STROKE);
+        mBookPaint = new Paint();
+        mBookPaint.setColor(Color.BLACK);
+        mBookPaint.setStrokeWidth(2);
+        mBookPaint.setStyle(Paint.Style.STROKE);
 
         mLinesPaint = new Paint();
-        mDummyPaint = new Paint();
         mLinesPaint.setAlpha(0);
 
         mLine1 = BitmapFactory.decodeResource(getResources(), R.mipmap.blue_line);
@@ -73,37 +65,6 @@ public class BookView extends View {
 
         }
 
-//        paint2 = new Paint();
-//        paint2.setColor(Color.WHITE);
-//        paint2.setStrokeWidth(2);
-//        paint2.setStyle(Paint.Style.FILL);
-//        paint2.setAlpha(0);
-
-
-        //bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-//        bm_offsetX = bm.getWidth()/2;
-//        bm_offsetY = bm.getHeight()/2;
-
-//        animPath = new Path();
-//        animPath.moveTo(5, 5);
-//
-//        animPath.lineTo(230, 5);
-//        animPath.lineTo(230, 460);
-//        animPath.rLineTo(-50,0);
-//
-//        //animPath.close();
-//
-//        pathMeasure = new PathMeasure(animPath, false);
-//        pathLength = pathMeasure.getLength();
-//
-//        Toast.makeText(getContext(), "pathLength: " + pathLength, Toast.LENGTH_LONG).show();
-//
-//        step = 1;
-//        distance = 0;
-//        pos = new float[2];
-//        tan = new float[2];
-//
-//        matrix = new Matrix();
     }
 
     @Override
@@ -112,38 +73,17 @@ public class BookView extends View {
         super.onDraw(canvas);
 
         //canvas.drawPath(animPath, paint);
-        canvas.drawRect(10, 10, 230, 320, paint);
+        canvas.drawRect(10, 10, 230, 320, mBookPaint);
 
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-        canvas.drawRect(0, 20, 220, 330, paint);
+        mBookPaint.setStyle(Paint.Style.FILL);
+        mBookPaint.setColor(Color.WHITE);
+        canvas.drawRect(0, 20, 220, 330, mBookPaint);
 
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-        canvas.drawRect(1, 20, 220, 330, paint);
-
-
+        mBookPaint.setStyle(Paint.Style.STROKE);
+        mBookPaint.setColor(Color.BLACK);
+        canvas.drawRect(1, 20, 220, 330, mBookPaint);
 
 
-//        Paint paint2=new Paint();
-//        paint2.setAlpha(0);
-//
-//        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.lines);
-//        canvas.drawBitmap(bm, 10, 40, paint);
-//
-//        Bitmap bm2 = BitmapFactory.decodeResource(getResources(), R.mipmap.lines);
-//        canvas.drawBitmap(bm2, 10, 110, paint);
-//
-//        Bitmap bm3 = BitmapFactory.decodeResource(getResources(), R.mipmap.lines);
-//        canvas.drawBitmap(bm3,10,190,paint);
-//
-//        Bitmap bm4 = BitmapFactory.decodeResource(getResources(), R.mipmap.lines);
-//        canvas.drawBitmap(bm4,10,260,paint);
-
-
-
-
-        Log.d("ALPHA", "" + mLinesPaint.getAlpha());
 
         if (mFadeInLineArr[0].floatValue==1f) {
 
@@ -183,31 +123,6 @@ public class BookView extends View {
         }
 
 
-
-
-
-
-
-//        if(!mFadeFirstLine) {
-//            mDummyPaint.setStyle(Paint.Style.FILL);
-//            mDummyPaint.setColor(Color.WHITE);
-//            canvas.drawRect(5, 25, 215, 325, mDummyPaint);
-//        }
-//
-//
-//        if(mFadeFirstLine){
-//
-//            if(mSlidingDistance>=200){
-//                mFadeFirstLine=false;
-//                return;
-//            }
-//            mSlidingDistance+=0.8;
-//            canvas.drawRect(5,25+mSlidingDistance,215,325,mDummyPaint);
-//            //postInvalidateDelayed(1);
-//            invalidate();
-//        }
-
-
     }
 
     private void fadeTheLine(Paint paint,FloatWrapper nextLine,FloatWrapper currentLine){
@@ -233,22 +148,12 @@ public class BookView extends View {
     }
 
 
-    private void fadeInFirstLine(Canvas canvas,Bitmap bitmap){
-
-
-    }
-
-
-
-
     public void fadeInTheLines() {
 
         mFadeInLineArr[0].floatValue = 1f;
         mFadeInLineArr[1].floatValue = 0f;
         mFadeInLineArr[2].floatValue = 0f;
         mFadeInLineArr[3].floatValue = 0f;
-
-
 
         invalidate();
 

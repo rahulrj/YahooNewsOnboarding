@@ -5,4 +5,5 @@
     <color name="darker_gray">#aaa</color>
 
     <color name="dark_yellow">#FE9A2E</color>
+    <color name="button_color">#01DFA5</color>
 </resources>

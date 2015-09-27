@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private Drawable mPagerBackground;
 
 
-
     private ImageView mCenterBox;
     private ImageView mCamcordImage;
     private ImageView mClockImage;
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private int mSelectedPosition = -1;
 
     //Second screen
-    private AnimationView mAnimationView;
+    private SunMoonView mAnimationView;
     private float mPreviousPositionOffset;
     private boolean mViewPagerScrollingLeft;
     private int mPreviousPosition;
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Third screen
-    private boolean mShouldSpheresRotate=true;
+    private boolean mShouldSpheresRotate = true;
     private ThirdScreenView mRoundView;
     private boolean mThirdPageSelected;
     private Button mLetsGoButton;
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpViews() {
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerBackground=mPager.getBackground();
+        mPagerBackground = mPager.getBackground();
         mIndicatorLayout = (LinearLayout) findViewById(R.id.indicator_layout);
 
         mPager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager()));
@@ -128,18 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-
-                  Log.d("RAHULPOS",""+position+" "+positionOffset);
-//                if (positionOffset > mPreviousPositionOffset || (mPreviousPositionOffset>0.5f && positionOffset==0)) {
-//                    //Log.d("RAHUL","LEFT");
-//                    mViewPagerScrollingLeft = true;
-//                }
-//                if (positionOffset < mPreviousPositionOffset ||(mPreviousPositionOffset==0f && positionOffset>0.5f)) {
-//                    //Log.d("RAHUL","RIGHT");
-//                    mViewPagerScrollingLeft = false;
-//
-//                }
-
+                // Scrollling left or right
                 if ((positionOffset > mPreviousPositionOffset && position == mPreviousPosition) || (positionOffset < mPreviousPositionOffset && position > mPreviousPosition)) {
                     mViewPagerScrollingLeft = true;
                 } else if (positionOffset < mPreviousPositionOffset) {
@@ -149,14 +136,13 @@ public class MainActivity extends AppCompatActivity {
                 mPreviousPositionOffset = positionOffset;
                 mPreviousPosition = position;
 
+                // FADE the indicator layout
+                if (position == 1 && mViewPagerScrollingLeft) {
 
-                if(position==1 && mViewPagerScrollingLeft){
+                    mIndicatorLayout.setAlpha(1 - positionOffset);
+                } else if (position == 1 && !mViewPagerScrollingLeft) {
 
-                    mIndicatorLayout.setAlpha(1-positionOffset);
-                }
-                else if(position==1 && !mViewPagerScrollingLeft){
-
-                    mIndicatorLayout.setAlpha(1-positionOffset);
+                    mIndicatorLayout.setAlpha(1 - positionOffset);
                 }
 
             }
@@ -177,20 +163,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (position == 0) {
                     mSelectedPosition = 0;
-                    //setViewsInOriginalPosition();
                     doFadeAnimation();
-                    //mOnSecondPageSelected=false;
-                    //mOnSecondPageSelected=false;
-                }
 
+                }
 
 
                 for (int i = 0; i < mIndicatorView.length; i++) {
                     mIndicatorView[i].setBackgroundResource(R.drawable.rounded_cell_gray);
-                    //mIndicatorView[i].setHeight(12);
                 }
                 mIndicatorView[position].setBackgroundResource(R.drawable.rounded_cell_red);
-                //mIndicatorView[position].setHeight(20);
             }
 
 
@@ -199,17 +180,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if (state == ViewPager.SCROLL_STATE_DRAGGING) {
                     mShouldSpheresRotate = false;
-                    //Log.d("DRAG","DRAGGING");
                 } else if (state == ViewPager.SCROLL_STATE_IDLE) {
                     mShouldSpheresRotate = true;
-                    //Log.d("DRAG","NOT DRAGGING");
                 }
                 if (mRoundView != null) {
                     mRoundView.setRotatingPermission(mShouldSpheresRotate);
                 }
 
                 if (mSelectedPosition == 0 && state == ViewPager.SCROLL_STATE_IDLE) {
-
                     mSecondPageSelected = false;
                 }
 
@@ -218,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void animateBookView(){
+    private void animateBookView() {
 
         mBookView.fadeInTheLines();
     }
@@ -291,33 +269,24 @@ public class MainActivity extends AppCompatActivity {
         public void transformPage(View page, float position) {
 
             int pageWidth = page.getWidth();
-            //Log.d("RAHUL", "" + pageWidth);
-
-            if((mViewPagerScrollingLeft && page.findViewById(R.id.center_box)!=null)) {
+            if ((mViewPagerScrollingLeft && page.findViewById(R.id.center_box) != null)) {
                 animateSecondScreen(position, pageWidth, 0);
-                //Log.d("RAHUL","ANIMTE CLOCK");
             }
 
-            if(!mViewPagerScrollingLeft && page.findViewById(R.id.center_box_second)!=null){
-
-                //Log.d("RAHUL","ANIMTE ANTI-CLOCK");
+            if (!mViewPagerScrollingLeft && page.findViewById(R.id.center_box_second) != null) {
                 animateSecondScreen(position, pageWidth, 1);
             }
-
 
             if (position < -1) {
 
             } else if (position <= 1) {
 
-                if (!mSecondPageSelected && page.findViewById(R.id.center_box_second)!=null) {
-
+                if (!mSecondPageSelected && page.findViewById(R.id.center_box_second) != null) {
                     moveTheSpheres(position, pageWidth);
-
                 }
 
-                if(!mShouldSpheresRotate && page.findViewById(R.id.center_box_third)!=null){
-
-                    mRoundView.translateTheSpheres(position,pageWidth);
+                if (!mShouldSpheresRotate && page.findViewById(R.id.center_box_third) != null) {
+                    mRoundView.translateTheSpheres(position, pageWidth);
                 }
 
 
@@ -330,27 +299,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveTheSpheres(float position, int pageWidth) {
 
-        //Log.d("POSITION", "" + (float) (-(1 - position) * 0.5 * pageWidth));
-
-//        float centerBoxPos = (float) (-(1 - position) * 0.80 * pageWidth);
-//        if (centerBoxPos > (-1 * mOriginalXValuesMap.get(mCenterBox))) {
-//            mCenterBox.setTranslationX(centerBoxPos);
-//        }
 
         float camcordPos = (float) ((1 - position) * 0.15 * pageWidth);
         if (camcordPos > (-1 * mOriginalXValuesMap.get(mCamcordImage))) {
             mCamcordImage.setTranslationX(camcordPos);
         }
 
-        //mCamcordImage.setTranslationX(1.5f);
-        Log.d("RAHUL",""+mCamcordImage.getX()+" "+mCenterBox.getX());
 
         float clockPos = (float) ((1 - position) * 0.50 * pageWidth);
         if (clockPos > (-1 * mOriginalXValuesMap.get(mClockImage))) {
             mClockImage.setTranslationX(clockPos);
         }
 
-        float graphPos = (float) ((1 - position) * 0.30 * pageWidth);
+        float graphPos = (float) ((1 - position) * 0.50 * pageWidth);
         if (graphPos > (-1 * mOriginalXValuesMap.get(mGraphImage))) {
             mGraphImage.setTranslationX(graphPos);
         }
@@ -377,15 +338,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
     }
 
-    private void animateSecondScreen(float position, int pageWidth,int direction){
+    private void animateSecondScreen(float position, int pageWidth, int direction) {
 
-        if(direction==0) {
+        if (direction == 0) {
             mAnimationView.animateSecondScreenClock(position);
-        }
-        else{
+        } else {
             mAnimationView.animateSecondScreenAntiClock(position);
         }
     }
@@ -408,13 +367,13 @@ public class MainActivity extends AppCompatActivity {
 
                 initFirstScreenViews(rootView, savedInstanceState);
             }
-            if(position==1){
+            if (position == 1) {
 
                 initSecondScreenViews(rootView, savedInstanceState);
             }
-            if(position==2){
+            if (position == 2) {
 
-                initThirdScreenViews(rootView,savedInstanceState);
+                initThirdScreenViews(rootView, savedInstanceState);
             }
 
             return rootView;
@@ -442,7 +401,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFirstScreenViews(View rootView, final Bundle savedInstanceState) {
 
-        Log.d("RAHUL", "CALLED");
         mCenterBox = (ImageView) rootView.findViewById(R.id.center_box);
         mCamcordImage = (ImageView) rootView.findViewById(R.id.imageView);
         mClockImage = (ImageView) rootView.findViewById(R.id.imageView6);
@@ -451,8 +409,6 @@ public class MainActivity extends AppCompatActivity {
         mQuoteImage = (ImageView) rootView.findViewById(R.id.imageView5);
         mMapImage = (ImageView) rootView.findViewById(R.id.imageView2);
         mWordPressImage = (ImageView) rootView.findViewById(R.id.imageView7);
-
-        Log.d("rag", "INITIALIXWD");
 
         initializeAlpha();
 
@@ -472,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
 
                     doFadeAnimation();
                 }
-            },700);
+            }, 700);
 
         }
 
@@ -510,7 +466,6 @@ public class MainActivity extends AppCompatActivity {
     private void doFadeAnimation() {
 
 
-
         ObjectAnimator fadeCamcord = ObjectAnimator.ofFloat(mCamcordImage, "alpha", 0f, 1f);
         fadeCamcord.setDuration(700);
 
@@ -545,42 +500,33 @@ public class MainActivity extends AppCompatActivity {
         mAnimatorSet.play(fadeCamcord).with(fadeAudio).with(fadeGraph).with(fadeWordpress).with(fadeClock).with(fadeMap).with(fadeQuote);
         mAnimatorSet.start();
 
-
-
-
-//        AnimatorSet mAnimationSet = new AnimatorSet();
-//        mAnimationSet.play(fadeIn);
-//        mAnimationSet.start();
     }
 
-    private void initSecondScreenViews(View rootView,Bundle savedInstanceState){
+    private void initSecondScreenViews(View rootView, Bundle savedInstanceState) {
 
-        final RelativeLayout secondScreenRoot=(RelativeLayout)rootView.findViewById(R.id.root);
+        final RelativeLayout secondScreenRoot = (RelativeLayout) rootView.findViewById(R.id.root);
         //final ImageView centerBox=(ImageView)rootView.findViewById(R.id.center_box_second);
-        mBookView=(BookView)rootView.findViewById(R.id.center_box_second);
-        mAnimationView=(AnimationView)rootView.findViewById(R.id.animation_view);
-
-
-
+        mBookView = (BookView) rootView.findViewById(R.id.center_box_second);
+        mAnimationView = (SunMoonView) rootView.findViewById(R.id.animation_view);
 
 
     }
 
-    private void initThirdScreenViews(View rootView,Bundle savedInstanceState){
+    private void initThirdScreenViews(View rootView, Bundle savedInstanceState) {
 
-        mRoundView=(ThirdScreenView)rootView.findViewById(R.id.round_view);
-        mLetsGoButton=(Button)rootView.findViewById(R.id.letsgo);
+        mRoundView = (ThirdScreenView) rootView.findViewById(R.id.round_view);
+        mLetsGoButton = (Button) rootView.findViewById(R.id.letsgo);
 
         mLetsGoButton.setOnClickListener(clickListener);
         mRoundView.setContext(this);
 
     }
 
-    View.OnClickListener clickListener=new View.OnClickListener() {
+    View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            switch (v.getId()){
+            switch (v.getId()) {
 
                 case R.id.letsgo:
 
@@ -591,31 +537,5 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//    private TextView sampleView;
-//    private void drawCircle(ImageView drawingView,ImageView centerBox,RelativeLayout rootView){
-//
-//        Bitmap bitmap = Bitmap.createBitmap((int) getWindowManager()
-//                .getDefaultDisplay().getWidth(), (int) getWindowManager()
-//                .getDefaultDisplay().getHeight(), Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(bitmap);
-//        drawingView.setImageBitmap(bitmap);
-//
-//        Paint p = new Paint();
-//        p.setColor(Color.BLACK);
-//        DashPathEffect dashPath = new DashPathEffect(new float[]{7,7}, (float)1.0);
-//
-//        p.setPathEffect(dashPath);
-//        p.setStyle(Paint.Style.STROKE);
-//
-//        sampleView=new TextView(MainActivity.this);
-//        sampleView.setX(320);
-//        sampleView.setY(40);
-//        sampleView.setText("Rahul");
-//        rootView.addView(sampleView);
-//
-//
-//
-//        Log.d("MEASURE",centerBox.getX()+centerBox.getWidth()/2+" "+centerBox.getY()+centerBox.getHeight()/2+80);
-//        canvas.drawCircle(centerBox.getX()+centerBox.getWidth()/2, centerBox.getY()+centerBox.getHeight()/2+80, 360, p);
-//    }
+
 }
