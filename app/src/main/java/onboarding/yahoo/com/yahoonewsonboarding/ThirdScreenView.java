@@ -1,7 +1,7 @@
 package onboarding.yahoo.com.yahoonewsonboarding;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -194,7 +194,7 @@ public class ThirdScreenView extends View {
 
             if (isAnim1Completed && isAnim2Completed && isAnim3Completed && isAnim4Completed && isAnim5Completed && isAnim6Completed) {
 
-                startNewActivity();
+                ((Activity)mContext).finish();
                 return;
             }
 
@@ -309,16 +309,12 @@ public class ThirdScreenView extends View {
     private float[] drawCircle(Canvas canvas, FloatWrapper originalPos, FloatWrapper step, Bitmap bm) {
 
         float distance = originalPos.floatValue + step.floatValue;
-        float positionArray[] = new float[3];
-        float degrees = 0f;
+        float positionArray[] = new float[2];
         if (distance < mPathLength) {
             mPathMeasure.getPosTan(distance, mPos, mTan);
 
             matrix.reset();
-            degrees = (float) (Math.atan2(mTan[1], mTan[0]) * 180.0 / Math.PI);
-            matrix.postRotate(degrees, bm_offsetX, bm_offsetY);
             matrix.postTranslate(mPos[0] - bm_offsetX, mPos[1] - bm_offsetY);
-
             canvas.drawBitmap(bm, matrix, null);
 
             if (mShouldSpheresRotate) {
@@ -327,12 +323,18 @@ public class ThirdScreenView extends View {
         } else {
             originalPos.floatValue = 0f;
             step.floatValue = 0f;
+
+            mPathMeasure.getPosTan(0, mPos, mTan);
+            matrix.reset();
+            matrix.postTranslate(mPos[0] - bm_offsetX, mPos[1] - bm_offsetY);
+            canvas.drawBitmap(bm, matrix, null);
+
+
             //invalidate();
         }
 
         positionArray[0] = mPos[0];
         positionArray[1] = mPos[1];
-        positionArray[2] = degrees;
 
         return positionArray;
 
@@ -368,11 +370,7 @@ public class ThirdScreenView extends View {
         mContext = context;
     }
 
-    private void startNewActivity() {
 
-        Intent i = new Intent(mContext, NewsActivity.class);
-        mContext.startActivity(i);
-    }
 
 
 }
