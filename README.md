@@ -7,3 +7,5 @@ Among those, i tried my hands on the on-boarding animtions which looked the cool
 
 ## Demo
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![](https://s3-us-west-2.amazonaws.com/helptestbucket/yahoo-news-demo.gif)
+
+[Here](https://www.youtube.com/watch?v=L8U1ykwiHm8) is the video for a more detailed and fine animation.
