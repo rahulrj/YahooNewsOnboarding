@@ -10,5 +10,5 @@ Among those, i tried my hands on the on-boarding animtions which looked the cool
 
 [Here](https://www.youtube.com/watch?v=L8U1ykwiHm8) is the video for a more detailed and fine animation.
 
-## Blog
+## How are these animations made?
 I wrote a blog about this about the process and techniques i followed to make these animations. [Here](http://rahulrj.github.io/android/yahoo-animation/) is the post.
