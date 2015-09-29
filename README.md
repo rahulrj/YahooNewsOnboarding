@@ -9,3 +9,6 @@ Among those, i tried my hands on the on-boarding animtions which looked the cool
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![](https://s3-us-west-2.amazonaws.com/helptestbucket/yahoo-news-demo.gif)
 
 [Here](https://www.youtube.com/watch?v=L8U1ykwiHm8) is the video for a more detailed and fine animation.
+
+## Blog
+I wrote a blog about this about the process and techniques i followed to make these animations. [Here](http://rahulrj.github.io/android/yahoo-animation/) is the post.
