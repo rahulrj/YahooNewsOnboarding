@@ -10,8 +10,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 
 /**
@@ -20,9 +22,10 @@ import android.view.View;
 public class ThirdScreenView extends View {
 
     private Paint mPaint;
-    private float mRadius = 160f;
-    private float mCircleX = 360f;
-    private float mCircleY = 360f;
+    // Change this to increase the radius of the circle
+    private float mRadius;
+    private float mCircleX;
+    private float mCircleY;
 
     private Bitmap mBitmap1, mBitmap2, mBitmap3, mBitmap4, mBitmap5, mBitmap6;
     private int bm_offsetX, bm_offsetY;
@@ -66,8 +69,8 @@ public class ThirdScreenView extends View {
     private FloatWrapper mSphereStepCountArr[] = new FloatWrapper[6];
 
 
-    private float mTempDistanceX = 50;
-    private float mTempDistanceY = 50;
+    private float mTempDistanceX;
+    private float mTempDistanceY;
     private boolean mUpperBoundHit;
     private int mBitmapScaleCounter = 0;
 
@@ -76,20 +79,20 @@ public class ThirdScreenView extends View {
 
     public ThirdScreenView(Context context) {
         super(context);
-        initMyView();
+        initMyView(context);
     }
 
     public ThirdScreenView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initMyView();
+        initMyView(context);
     }
 
     public ThirdScreenView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initMyView();
+        initMyView(context);
     }
 
-    public void initMyView() {
+    public void initMyView(Context context) {
         mPaint = new Paint();
         mPaint.setColor(Color.TRANSPARENT);
         mPaint.setStrokeWidth(1);
@@ -107,6 +110,20 @@ public class ThirdScreenView extends View {
         bm_offsetY = mBitmap4.getHeight() / 2;
 
         mAnimPath = new Path();
+        Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        // change the x value of center of circle here
+        mCircleX=size.x/2;
+        // change the y value of center of circle here
+        mCircleY=(float)(size.y/3.3);
+        // change radius here
+        mRadius=(float)(2*1.0/9)*size.x;
+
+        mTempDistanceX=(float)(1.0/14)*size.x;
+        mTempDistanceY=(float)(1.0/14)*size.x;
+
         RectF rectF = new RectF(mCircleX - mRadius, mCircleY - mRadius, mCircleX + mRadius, mCircleY + mRadius);
         mAnimPath.addArc(rectF, -90, 359);
         mAnimPath.close();

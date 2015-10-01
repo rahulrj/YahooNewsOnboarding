@@ -1,5 +1,6 @@
 package onboarding.yahoo.com.yahoonewsonboarding;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,8 +11,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 
 /**
@@ -38,29 +41,29 @@ public class SunMoonView extends View {
     private Bitmap mBitmapMoon;
     private PathMeasure mPathMeasureMoon;
 
-    private int RADIUS=280;
-    private int XCOORD=360;
-    private int YCOORD=340;
+    private float RADIUS;
+    private float XCOORD;
+    private float YCOORD;
 
 
     Path.Direction mCurrentDirection = Path.Direction.CW;
 
     public SunMoonView(Context context) {
         super(context);
-        initMyView();
+        initMyView(context);
     }
 
     public SunMoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initMyView();
+        initMyView(context);
     }
 
     public SunMoonView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initMyView();
+        initMyView(context);
     }
 
-    public void initMyView() {
+    public void initMyView(Context context) {
         mPaint = new Paint();
         mPaint.setColor(Color.BLUE);
         mPaint.setStrokeWidth(1);
@@ -73,6 +76,14 @@ public class SunMoonView extends View {
         mBitmapMoon = BitmapFactory.decodeResource(getResources(), R.mipmap.moon_new);
         mBm_offsetX = mBitmapSun.getWidth() / 2;
         mBm_offsetY = mBitmapSun.getHeight() / 2;
+
+        Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        XCOORD=size.x/2;
+        YCOORD=(float)(size.y*0.28);
+        RADIUS=(float)(7*1.0/18)*size.x;
 
 
         mBm_offsetX2 = mBitmapMoon.getWidth() / 2;

@@ -2,6 +2,7 @@ package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -293,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
 
             }
-            //Log.d("NOW POS",""+mCamcordImage.getX());
+
         }
     }
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="dimen_40">65dp</dimen>
+    <dimen name="dimen_50">75dp</dimen>
+    <dimen name="dimen_45">70dp</dimen>
+    <dimen name="dimen_90">115dp</dimen>
+    <dimen name="dimen_120">145dp</dimen>
+    <dimen name="dimen_175">200dp</dimen>
+    <dimen name="dimen_80">105dp</dimen>
+
+</resources>

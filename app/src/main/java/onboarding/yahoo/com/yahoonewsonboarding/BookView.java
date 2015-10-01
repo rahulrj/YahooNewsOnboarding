@@ -19,8 +19,6 @@ public class BookView extends View {
     private Bitmap mLine1, mLine2, mLine3, mLine4;
 
 
-    private final int FADE_INTERVAL = 500;
-    private int REFRESH_INTERVAL = 10;
     private int ALPHA_INCREMENT=17;
 
     private Paint mLinesPaintArr[]=new Paint[4];
@@ -72,30 +70,43 @@ public class BookView extends View {
 
         super.onDraw(canvas);
 
-        //canvas.drawPath(animPath, paint);
-        canvas.drawRect(10, 10, 230, 320, mBookPaint);
+//        canvas.drawRect(10, 10, 230, 320, mBookPaint);
+//
+//        mBookPaint.setStyle(Paint.Style.FILL);
+//        mBookPaint.setColor(Color.WHITE);
+//        canvas.drawRect(0, 20, 220, 330, mBookPaint);
+//
+//        mBookPaint.setStyle(Paint.Style.STROKE);
+//        mBookPaint.setColor(Color.BLACK);
+//        canvas.drawRect(1, 20, 220, 330, mBookPaint);
+
+
+
+        canvas.drawRect(10, 15, getWidth() - 1, getHeight() - 20, mBookPaint);
 
         mBookPaint.setStyle(Paint.Style.FILL);
         mBookPaint.setColor(Color.WHITE);
-        canvas.drawRect(0, 20, 220, 330, mBookPaint);
+        canvas.drawRect(0, 25, getWidth() - 10, getHeight() - 10, mBookPaint);
 
         mBookPaint.setStyle(Paint.Style.STROKE);
         mBookPaint.setColor(Color.BLACK);
-        canvas.drawRect(1, 20, 220, 330, mBookPaint);
+        canvas.drawRect(1, 25, getWidth() - 10, getHeight() - 10, mBookPaint);
 
-
-
+//        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+//        Log.d("HEIGHT",""+metrics.density);
+//
+//        int totalHeight=getHeight()-100;
         if (mFadeInLineArr[0].floatValue==1f) {
 
-            canvas.drawBitmap(mLine1, 10, 40, mLinesPaintArr[0]);
+            canvas.drawBitmap(mLine1, 10, 50, mLinesPaintArr[0]);
             fadeTheLine(mLinesPaintArr[0], mFadeInLineArr[1], mFadeInLineArr[0]);
 
         }
 
         if (mFadeInLineArr[1].floatValue==1f) {
 
-            canvas.drawBitmap(mLine1,10,40,null);
-            canvas.drawBitmap(mLine2, 10, 110, mLinesPaintArr[1]);
+            canvas.drawBitmap(mLine1,10,50,null);
+            canvas.drawBitmap(mLine2, 10, mLine1.getHeight()+60, mLinesPaintArr[1]);
 
             fadeTheLine(mLinesPaintArr[1],mFadeInLineArr[2],mFadeInLineArr[1]);
 
@@ -103,9 +114,9 @@ public class BookView extends View {
 
         if (mFadeInLineArr[2].floatValue==1f) {
 
-            canvas.drawBitmap(mLine1,10,40,null);
-            canvas.drawBitmap(mLine2, 10, 110, null);
-            canvas.drawBitmap(mLine3, 10, 180, mLinesPaintArr[2]);
+            canvas.drawBitmap(mLine1,10,50,null);
+            canvas.drawBitmap(mLine2, 10, mLine1.getHeight()+60, null);
+            canvas.drawBitmap(mLine3, 10, 2*mLine1.getHeight()+70, mLinesPaintArr[2]);
 
             fadeTheLine(mLinesPaintArr[2],mFadeInLineArr[3],mFadeInLineArr[2]);
 
@@ -113,10 +124,10 @@ public class BookView extends View {
 
         if (mFadeInLineArr[3].floatValue==1f) {
 
-            canvas.drawBitmap(mLine1,10,40,null);
-            canvas.drawBitmap(mLine2, 10, 110, null);
-            canvas.drawBitmap(mLine3, 10, 180, null);
-            canvas.drawBitmap(mLine4, 10, 250, mLinesPaintArr[3]);
+            canvas.drawBitmap(mLine1,10,50,null);
+            canvas.drawBitmap(mLine2, 10, mLine1.getHeight()+60, null);
+            canvas.drawBitmap(mLine3, 10, 2*mLine1.getHeight()+70, null);
+            canvas.drawBitmap(mLine4, 10, 3*mLine1.getHeight()+80, mLinesPaintArr[3]);
 
             fadeTheLine(mLinesPaintArr[3],mFadeInLineArr[3],mFadeInLineArr[3]);
 

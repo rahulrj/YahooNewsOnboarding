@@ -7,8 +7,13 @@
     <dimen name="dimen_470">470dp</dimen>
     <dimen name="dimen_30">30dp</dimen>
     <dimen name="dimen_20">20dp</dimen>
-
-
+    <dimen name="dimen_50">50dp</dimen>
+    <dimen name="dimen_45">45dp</dimen>
+    <dimen name="dimen_40">40dp</dimen>
+    <dimen name="dimen_90">90dp</dimen>
+    <dimen name="dimen_120">120dp</dimen>
+    <dimen name="dimen_175">175dp</dimen>
+    <dimen name="dimen_80">80dp</dimen>
 
     <dimen name="text_26">26sp</dimen>
     <dimen name="text_16">16sp</dimen>
