@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+
+    <dimen name="dimen_20">45dp</dimen>
+    <dimen name="dimen_30">55dp</dimen>
     <dimen name="dimen_40">65dp</dimen>
     <dimen name="dimen_50">75dp</dimen>
     <dimen name="dimen_45">70dp</dimen>
@@ -8,5 +12,19 @@
     <dimen name="dimen_120">145dp</dimen>
     <dimen name="dimen_175">200dp</dimen>
     <dimen name="dimen_80">105dp</dimen>
+    <dimen name="dimen_132">157dp</dimen>
+    <dimen name="dimen_242">267dp</dimen>
+    <dimen name="dimen_70">95dp</dimen>
+    <dimen name="dimen_65">90dp</dimen>
+    <dimen name="dimen_10">35dp</dimen>
+    <dimen name="dimen_28">53dp</dimen>
+    <dimen name="dimen_230">255dp</dimen>
+    <dimen name="dimen_130">155dp</dimen>
+    <dimen name="dimen_240">265dp</dimen>
+    <dimen name="dimen_22">40dp</dimen>
+    <dimen name="dimen_15">40dp</dimen>
+    <dimen name="dimen_25">50dp</dimen>
+    <dimen name="dimen_1">25dp</dimen>
+    <dimen name="dimen_5">30dp</dimen>
 
 </resources>

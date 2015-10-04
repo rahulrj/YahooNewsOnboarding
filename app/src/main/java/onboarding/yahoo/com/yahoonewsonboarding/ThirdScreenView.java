@@ -254,10 +254,10 @@ public class ThirdScreenView extends View {
 
         float x = 0f, y = 0f;
 
-        double len = Math.hypot((pos[0] - 360), (pos[1] - 360));
+        double len = Math.hypot((pos[0] - mCircleX), (pos[1] - mCircleY));
 
-        double dx = (pos[0] - 360) / len;
-        double dy = (pos[1] - 360) / len;
+        double dx = (pos[0] - mCircleX) / len;
+        double dy = (pos[1] - mCircleY) / len;
 
         x = (float) (pos[0] + mTempDistanceX * dx);
         y = (float) (pos[1] + mTempDistanceY * dy);

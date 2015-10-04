@@ -2,7 +2,6 @@ package onboarding.yahoo.com.yahoonewsonboarding;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -102,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < dotsCount; i++) {
 
             mIndicatorView[i] = new TextView(this);
-            mIndicatorView[i].setWidth(22);
-            mIndicatorView[i].setHeight(22);
+            mIndicatorView[i].setWidth((int)getResources().getDimension(R.dimen.dimen_12));
+            mIndicatorView[i].setHeight((int)getResources().getDimension(R.dimen.dimen_12));
             mIndicatorView[i].setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 15, 0);
+            params.setMargins(0, 0, (int)getResources().getDimension(R.dimen.dimen_15), 0);
             mIndicatorView[i].setLayoutParams(params);
             mIndicatorView[i].setBackgroundResource(R.drawable.rounded_cell_gray);
             mIndicatorLayout.addView(mIndicatorView[i]);

@@ -65,10 +65,10 @@ public class SunMoonView extends View {
 
     public void initMyView(Context context) {
         mPaint = new Paint();
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(Color.BLACK);
         mPaint.setStrokeWidth(1);
         mPaint.setStyle(Paint.Style.STROKE);
-        DashPathEffect dashPath = new DashPathEffect(new float[]{7, 7}, (float) 1.0);
+        DashPathEffect dashPath = new DashPathEffect(new float[]{4, 5}, (float) 1.0);
 
         mPaint.setPathEffect(dashPath);
 

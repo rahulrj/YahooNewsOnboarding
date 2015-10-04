@@ -4,16 +4,32 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
 
-    <dimen name="dimen_470">470dp</dimen>
     <dimen name="dimen_30">30dp</dimen>
     <dimen name="dimen_20">20dp</dimen>
     <dimen name="dimen_50">50dp</dimen>
+    <dimen name="dimen_35">35dp</dimen>
     <dimen name="dimen_45">45dp</dimen>
     <dimen name="dimen_40">40dp</dimen>
     <dimen name="dimen_90">90dp</dimen>
     <dimen name="dimen_120">120dp</dimen>
     <dimen name="dimen_175">175dp</dimen>
     <dimen name="dimen_80">80dp</dimen>
+    <dimen name="dimen_132">132dp</dimen>
+    <dimen name="dimen_242">242dp</dimen>
+    <dimen name="dimen_70">70dp</dimen>
+    <dimen name="dimen_130">130dp</dimen>
+    <dimen name="dimen_240">240dp</dimen>
+    <dimen name="dimen_65">65dp</dimen>
+    <dimen name="dimen_10">10dp</dimen>
+    <dimen name="dimen_28">28dp</dimen>
+    <dimen name="dimen_230">230dp</dimen>
+    <dimen name="dimen_22">22dp</dimen>
+    <dimen name="dimen_15">15dp</dimen>
+    <dimen name="dimen_25">25dp</dimen>
+    <dimen name="dimen_1">1dp</dimen>
+    <dimen name="dimen_5">5dp</dimen>
+    <dimen name="dimen_6">6dp</dimen>
+    <dimen name="dimen_12">12dp</dimen>
 
     <dimen name="text_26">26sp</dimen>
     <dimen name="text_16">16sp</dimen>
